@@ -1,0 +1,44 @@
+<#import "template.ftl" as layout>
+<@layout.registrationLayout displayMessage=!messagesPerField.existsError('password'); section>
+    <#if section = "header">
+        ${msg("doLogIn")}
+    <#elseif section = "form">
+        <div id="kc-form">
+            <div id="kc-form-wrapper">
+                <form id="kc-form-login" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post">
+                    <div class="${properties.kcFormGroupClass!}">
+                        <label for="password" class="${properties.kcLabelClass!}">${msg("password")}</label>
+                        <div class="${properties.kcInputGroup!}" dir="ltr">
+                            <input tabindex="2" id="password" class="${properties.kcInputClass!}" name="password"
+                                   type="password" autocomplete="on" autofocus
+                                   aria-invalid="<#if messagesPerField.existsError('password')>true</#if>"
+                            />
+                            <button class="${properties.kcFormPasswordVisibilityButtonClass!}" type="button" aria-label="${msg("showPassword")}"
+                                    aria-controls="password" data-password-toggle tabindex="3"
+                                    data-label-show="${msg('showPassword')}" data-label-hide="${msg('hidePassword')}">
+                                <span class="${properties.kcFormPasswordVisibilityIconShow!}" aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <#if messagesPerField.existsError('password')>
+                            <span id="input-error-password" class="${properties.kcInputErrorMessageClass!}" aria-live="polite">
+                                ${kcSanitize(messagesPerField.get('password'))?no_esc}
+                            </span>
+                        </#if>
+                    </div>
+
+                    <div class="${properties.kcFormGroupClass!} ${properties.kcFormSettingClass!}">
+                        <div id="kc-form-options" class="${properties.kcFormOptionsClass!}">
+                            <#if realm.resetPasswordAllowed>
+                                <a tabindex="4" class="mytheme-link" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a>
+                            </#if>
+                        </div>
+                    </div>
+
+                    <div id="kc-form-buttons" class="${properties.kcFormButtonsClass!}">
+                        <input tabindex="5" class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}" name="login" id="kc-login" type="submit" value="${msg("doLogIn")}"/>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </#if>
+</@layout.registrationLayout>

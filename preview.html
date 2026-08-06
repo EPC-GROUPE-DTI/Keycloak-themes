@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sin up — gts-theme preview</title>
+  <link rel="icon" href="themes/gts-theme/login/resources/img/favicon.svg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
+  <link rel="stylesheet" href="themes/gts-theme/login/resources/css/styles.css" />
+</head>
+<body class="gts-theme-body">
+  <div class="gts-theme-shell">
+    <div class="gts-theme-hero" aria-hidden="true">
+      <img src="themes/gts-theme/login/resources/img/login.svg" alt="" class="gts-theme-hero-img" />
+    </div>
+
+    <div class="gts-theme-form-panel">
+      <div class="gts-theme-locale" id="kc-locale">
+        <div class="menu-button-links gts-theme-locale-dropdown">
+          <button id="kc-current-locale-link" aria-label="Languages" aria-haspopup="true" aria-expanded="false">English</button>
+          <ul role="menu" class="gts-theme-locale-list" id="language-switch1">
+            <li class="gts-theme-locale-list-item"><a role="menuitem" class="gts-theme-locale-link" href="#" data-lang="en">English</a></li>
+            <li class="gts-theme-locale-list-item"><a role="menuitem" class="gts-theme-locale-link" href="#" data-lang="fr">Français</a></li>
+            <li class="gts-theme-locale-list-item"><a role="menuitem" class="gts-theme-locale-link" href="#" data-lang="es">Español</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="gts-theme-form-inner">
+        <div id="kc-header" class="gts-theme-header">
+          <div id="kc-header-wrapper" class="gts-theme-brand">
+            <img class="gts-theme-logo" src="themes/gts-theme/login/resources/img/logo.svg" alt="" onerror="this.style.display='none'" />
+          </div>
+        </div>
+
+        <div id="kc-content">
+          <div id="kc-content-wrapper">
+            <form id="kc-form-login" action="#" method="post">
+              <div class="gts-theme-form-group">
+                <label for="username" class="gts-theme-label" data-i18n="username">Mail<span class="required" aria-hidden="true">*</span></label>
+                <input id="username" class="gts-theme-input" name="username" value="" type="text" placeholder="mail" autocomplete="username" dir="ltr" />
+              </div>
+
+              <div class="gts-theme-form-group">
+                <label for="password" class="gts-theme-label"><span data-i18n="password">Password</span><span class="required" aria-hidden="true">*</span></label>
+                <div class="gts-theme-input-group" dir="ltr">
+                  <input id="password" class="gts-theme-input" name="password" type="password" autocomplete="current-password" data-i18n-placeholder="password" placeholder="Password" />
+                  <button class="gts-theme-toggle" type="button" aria-label="Show password" aria-controls="password" data-password-toggle data-i18n-label-show="showPassword" data-i18n-label-hide="hidePassword" data-label-show="Show password" data-label-hide="Hide password">
+                    <span class="gts-theme-eye" aria-hidden="true"></span>
+                  </button>
+                </div>
+              </div>
+
+              <div id="kc-form-buttons" class="gts-theme-form-buttons">
+                <input class="gts-theme-btn gts-theme-btn-primary gts-theme-btn-lg" name="login" id="kc-login" type="submit" data-i18n-value="doLogIn" value="Connexion" />
+              </div>
+
+              <div class="gts-theme-form-forgot">
+                <a class="gts-theme-link" href="#" data-i18n="doForgotPassword">I forgot my password</a>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="themes/gts-theme/login/resources/js/script.js"></script>
+</body>
+</html>
