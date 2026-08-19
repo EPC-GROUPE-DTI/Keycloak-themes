@@ -1,118 +1,102 @@
+/* =============================================================================
+   XPLORE login theme — progressive enhancement only.
+   Everything here is optional: the pages work with JavaScript disabled.
+   The locale menu is handled by Keycloak's own menu-button-links.js.
+   ============================================================================= */
 (function () {
   "use strict";
 
-  var i18n = {
-    en: {
-      username: "Mail",
-      password: "Password",
-      doLogIn: "Sign in",
-      doForgotPassword: "I forgot my password",
-      noAccount: "You don't have an account",
-      doRegister: "Sign up",
-      showPassword: "Show password",
-      hidePassword: "Hide password"
-    },
-    fr: {
-      username: "Mail",
-      password: "Mot de passe",
-      doLogIn: "Connexion",
-      doForgotPassword: "Mot de passe oubli\u00e9\u00a0?",
-      noAccount: "Vous n\u2019avez pas de compte\u00a0?",
-      doRegister: "S\u2019inscrire",
-      showPassword: "Afficher le mot de passe",
-      hidePassword: "Masquer le mot de passe"
-    },
-    es: {
-      username: "Correo",
-      password: "Contrase\u00f1a",
-      doLogIn: "Conectarse",
-      doForgotPassword: "Olvid\u00e9 mi contrase\u00f1a",
-      noAccount: "\u00bfNo tienes cuenta?",
-      doRegister: "Registrarse",
-      showPassword: "Mostrar contrase\u00f1a",
-      hidePassword: "Ocultar contrase\u00f1a"
+  /* --- Password visibility ------------------------------------------------ */
+  function bindReveal(button) {
+    var input = document.getElementById(button.getAttribute("aria-controls"));
+    var icon = button.querySelector("span");
+    if (!input) return;
+
+    button.hidden = false;
+    button.setAttribute("aria-pressed", "false");
+
+    button.addEventListener("click", function () {
+      var shown = input.type === "text";
+      input.type = shown ? "password" : "text";
+      button.setAttribute("aria-pressed", String(!shown));
+      button.setAttribute(
+        "aria-label",
+        shown ? button.dataset.labelShow : button.dataset.labelHide
+      );
+      if (icon) {
+        icon.classList.toggle("gts-icon-eye", shown);
+        icon.classList.toggle("gts-icon-eye-off", !shown);
+      }
+      // keep the caret where the person left it
+      var end = input.value.length;
+      input.focus();
+      try {
+        input.setSelectionRange(end, end);
+      } catch (e) {
+        /* number/email inputs don't allow this — harmless */
+      }
+    });
+  }
+
+  /* --- Caps lock notice --------------------------------------------------- */
+  function bindCapsLock(input) {
+    var notice = document.getElementById(input.id + "-caps");
+    if (!notice) return;
+
+    function update(event) {
+      if (typeof event.getModifierState !== "function") return;
+      notice.dataset.visible = String(event.getModifierState("CapsLock"));
     }
-  };
 
-  var langNames = { en: "English", fr: "Fran\u00e7ais", es: "Espa\u00f1ol" };
-
-  function applyLang(lang) {
-    var t = i18n[lang];
-    if (!t) return;
-
-    // text nodes
-    document.querySelectorAll("[data-i18n]").forEach(function (el) {
-      el.textContent = t[el.dataset.i18n] || el.textContent;
+    input.addEventListener("keyup", update);
+    input.addEventListener("keydown", update);
+    input.addEventListener("blur", function () {
+      notice.dataset.visible = "false";
     });
+  }
 
-    // input placeholders
-    document.querySelectorAll("[data-i18n-placeholder]").forEach(function (el) {
-      el.placeholder = t[el.dataset.i18nPlaceholder] || el.placeholder;
+  /* --- Submit feedback ---------------------------------------------------- */
+  function bindPending(form) {
+    form.addEventListener("submit", function () {
+      var button = form.querySelector("[data-pending-label]");
+      if (!button || button.dataset.pending === "true") return;
+
+      // Let the value reach the server before we change the button.
+      window.setTimeout(function () {
+        button.dataset.pending = "true";
+        button.disabled = true;
+        var label = button.dataset.pendingLabel;
+        if (button.tagName === "INPUT") {
+          button.value = label;
+        } else {
+          button.textContent = label;
+        }
+      }, 0);
     });
+  }
 
-    // submit value
-    document.querySelectorAll("[data-i18n-value]").forEach(function (el) {
-      el.value = t[el.dataset.i18nValue] || el.value;
+  function reset() {
+    document.querySelectorAll("[data-pending='true']").forEach(function (button) {
+      button.dataset.pending = "false";
+      button.disabled = false;
+      var label = button.dataset.idleLabel;
+      if (!label) return;
+      if (button.tagName === "INPUT") {
+        button.value = label;
+      } else {
+        button.textContent = label;
+      }
     });
-
-    // password toggle aria-labels
-    document.querySelectorAll("[data-i18n-label-show]").forEach(function (el) {
-      var show = t[el.dataset.i18nLabelShow];
-      var hide = t[el.dataset.i18nLabelHide];
-      if (show) el.dataset.labelShow = show;
-      if (hide) el.dataset.labelHide = hide;
-    });
-
-    var localeBtn = document.getElementById("kc-current-locale-link");
-    if (localeBtn) localeBtn.textContent = langNames[lang];
-
-    localStorage.setItem("preview-lang", lang);
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    // Locale dropdown toggle
-    var localeBtn = document.getElementById("kc-current-locale-link");
-    var localeList = document.getElementById("language-switch1");
-    if (localeBtn && localeList) {
-      localeBtn.addEventListener("click", function (e) {
-        e.stopPropagation();
-        var expanded = localeBtn.getAttribute("aria-expanded") === "true";
-        localeBtn.setAttribute("aria-expanded", String(!expanded));
-        localeList.style.display = expanded ? "" : "block";
-      });
-      document.addEventListener("click", function () {
-        localeBtn.setAttribute("aria-expanded", "false");
-        localeList.style.display = "";
-      });
+    document.querySelectorAll("[data-reveal]").forEach(bindReveal);
+    document.querySelectorAll("[data-caps-lock]").forEach(bindCapsLock);
+    document.querySelectorAll("form[data-pending-form]").forEach(bindPending);
+  });
 
-      // Language selection
-      localeList.querySelectorAll("[data-lang]").forEach(function (link) {
-        link.addEventListener("click", function (e) {
-          e.preventDefault();
-          applyLang(link.dataset.lang);
-        });
-      });
-    }
-
-    // Restore saved language
-    var saved = localStorage.getItem("preview-lang");
-    if (saved && i18n[saved]) applyLang(saved);
-
-    document.querySelectorAll("[data-password-toggle]").forEach(function (button) {
-      button.addEventListener("click", function () {
-        var input = document.getElementById(button.getAttribute("aria-controls"));
-        if (!input) {
-          return;
-        }
-
-        var isVisible = input.getAttribute("type") === "text";
-        input.setAttribute("type", isVisible ? "password" : "text");
-        button.classList.toggle("mytheme-toggle-visible", !isVisible);
-
-        if (button.dataset.labelShow && button.dataset.labelHide) {
-          button.setAttribute("aria-label", isVisible ? button.dataset.labelShow : button.dataset.labelHide);
-        }
-      });
-    });
+  // Coming back via the browser's back button must not leave a dead button.
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted) reset();
   });
 })();

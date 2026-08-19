@@ -1,62 +1,37 @@
 <#import "template.ftl" as layout>
+<#import "gts-commons.ftl" as gts>
 <#import "password-commons.ftl" as passwordCommons>
-<@layout.registrationLayout displayMessage=!messagesPerField.existsError('password','password-confirm'); section>
+<@layout.registrationLayout displayMessage=!messagesPerField.existsError('password','password-confirm') subtitle=msg("updatePasswordSubtitle"); section>
     <#if section = "header">
         ${msg("updatePasswordTitle")}
     <#elseif section = "form">
-        <form id="kc-passwd-update-form" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post">
-            <div class="${properties.kcFormGroupClass!}">
-                <label for="password-new" class="${properties.kcLabelClass!}">${msg("passwordNew")}</label>
-                <div class="${properties.kcInputGroup!}" dir="ltr">
-                    <input type="password" id="password-new" name="password-new" class="${properties.kcInputClass!}"
-                           autofocus autocomplete="new-password"
-                           aria-invalid="<#if messagesPerField.existsError('password','password-confirm')>true</#if>"
-                    />
-                    <button class="${properties.kcFormPasswordVisibilityButtonClass!}" type="button" aria-label="${msg('showPassword')}"
-                            aria-controls="password-new" data-password-toggle
-                            data-label-show="${msg('showPassword')}" data-label-hide="${msg('hidePassword')}">
-                        <span class="${properties.kcFormPasswordVisibilityIconShow!}" aria-hidden="true"></span>
-                    </button>
-                </div>
+        <form id="kc-passwd-update-form" class="${properties.kcFormClass!}" action="${url.loginAction}" method="post" data-pending-form novalidate>
+            <@gts.passwordField id="password-new" name="password-new" label=msg("passwordNew")
+                                autocomplete="new-password" autofocus=true
+                                invalid=messagesPerField.existsError('password')>
                 <#if messagesPerField.existsError('password')>
-                    <span id="input-error-password" class="${properties.kcInputErrorMessageClass!}" aria-live="polite">
-                        ${kcSanitize(messagesPerField.get('password'))?no_esc}
-                    </span>
+                    <@gts.fieldError id="input-error-password" message=kcSanitize(messagesPerField.get('password')) />
                 </#if>
-            </div>
+            </@gts.passwordField>
 
-            <div class="${properties.kcFormGroupClass!}">
-                <label for="password-confirm" class="${properties.kcLabelClass!}">${msg("passwordConfirm")}</label>
-                <div class="${properties.kcInputGroup!}" dir="ltr">
-                    <input type="password" id="password-confirm" name="password-confirm"
-                           class="${properties.kcInputClass!}"
-                           autocomplete="new-password"
-                           aria-invalid="<#if messagesPerField.existsError('password-confirm')>true</#if>"
-                    />
-                    <button class="${properties.kcFormPasswordVisibilityButtonClass!}" type="button" aria-label="${msg('showPassword')}"
-                            aria-controls="password-confirm" data-password-toggle
-                            data-label-show="${msg('showPassword')}" data-label-hide="${msg('hidePassword')}">
-                        <span class="${properties.kcFormPasswordVisibilityIconShow!}" aria-hidden="true"></span>
-                    </button>
-                </div>
+            <@gts.passwordField id="password-confirm" name="password-confirm" label=msg("passwordConfirm")
+                                autocomplete="new-password"
+                                invalid=messagesPerField.existsError('password-confirm')>
                 <#if messagesPerField.existsError('password-confirm')>
-                    <span id="input-error-password-confirm" class="${properties.kcInputErrorMessageClass!}" aria-live="polite">
-                        ${kcSanitize(messagesPerField.get('password-confirm'))?no_esc}
-                    </span>
+                    <@gts.fieldError id="input-error-password-confirm" message=kcSanitize(messagesPerField.get('password-confirm')) />
                 </#if>
+            </@gts.passwordField>
+
+            <div class="${properties.kcFormOptionsClass!} ${properties.kcFormSettingClass!}">
+                <@passwordCommons.logoutOtherSessions/>
             </div>
 
-            <div class="${properties.kcFormGroupClass!}">
-                <@passwordCommons.logoutOtherSessions/>
-
-                <div id="kc-form-buttons" class="${properties.kcFormButtonsClass!}">
-                    <#if isAppInitiatedAction??>
-                        <input name="login" class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonLargeClass!}" type="submit" value="${msg("doSubmit")}" />
-                        <button class="${properties.kcButtonClass!} ${properties.kcButtonDefaultClass!} ${properties.kcButtonLargeClass!}" type="submit" name="cancel-aia" value="true">${msg("doCancel")}</button>
-                    <#else>
-                        <input name="login" class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}" type="submit" value="${msg("doSubmit")}" />
-                    </#if>
-                </div>
+            <div id="kc-form-buttons" class="${properties.kcFormButtonsClass!}">
+                <@gts.submitButton label=msg("doSubmit") pending=msg("pendingSaving") />
+                <#if isAppInitiatedAction??>
+                    <button type="submit" name="cancel-aia" value="true"
+                            class="${properties.kcButtonClass!} ${properties.kcButtonDefaultClass!} ${properties.kcButtonLargeClass!}">${msg("doCancel")}</button>
+                </#if>
             </div>
         </form>
     </#if>

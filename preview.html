@@ -1,72 +1,791 @@
 <!DOCTYPE html>
-<html lang="en">
+<html class="gts-html" lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Sin up — gts-theme preview</title>
-  <link rel="icon" href="themes/gts-theme/login/resources/img/favicon.svg" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" />
-  <link rel="stylesheet" href="themes/gts-theme/login/resources/css/styles.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>EXPLORE login theme — preview</title>
+<link rel="icon" href="themes/gts-theme/login/resources/img/favicon.svg">
+<link rel="stylesheet" href="themes/gts-theme/login/resources/css/styles.css">
+<style>
+  /* Preview chrome only — not part of the theme. */
+  .pv-bar {
+    position: fixed;
+    z-index: 100;
+    right: 1rem;
+    bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    padding: .375rem;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+    box-shadow: var(--shadow-md);
+    font: 500 .8125rem/1 var(--font);
+    color: var(--ink);
+  }
+  .pv-bar select,
+  .pv-bar button {
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: 0;
+    border-radius: var(--r-pill);
+    padding: .5rem .75rem;
+    cursor: pointer;
+  }
+  .pv-bar select { border: 1px solid var(--line); }
+  .pv-bar button:hover { background: var(--surface-sunken); }
+  @media (max-width: 30rem) { .pv-bar { left: 1rem; right: 1rem; justify-content: space-between; } }
+</style>
 </head>
-<body class="gts-theme-body">
-  <div class="gts-theme-shell">
-    <div class="gts-theme-hero" aria-hidden="true">
-      <img src="themes/gts-theme/login/resources/img/login.svg" alt="" class="gts-theme-hero-img" />
-    </div>
+<body class="gts-body">
 
-    <div class="gts-theme-form-panel">
-      <div class="gts-theme-locale" id="kc-locale">
-        <div class="menu-button-links gts-theme-locale-dropdown">
-          <button id="kc-current-locale-link" aria-label="Languages" aria-haspopup="true" aria-expanded="false">English</button>
-          <ul role="menu" class="gts-theme-locale-list" id="language-switch1">
-            <li class="gts-theme-locale-list-item"><a role="menuitem" class="gts-theme-locale-link" href="#" data-lang="en">English</a></li>
-            <li class="gts-theme-locale-list-item"><a role="menuitem" class="gts-theme-locale-link" href="#" data-lang="fr">Français</a></li>
-            <li class="gts-theme-locale-list-item"><a role="menuitem" class="gts-theme-locale-link" href="#" data-lang="es">Español</a></li>
-          </ul>
+<div class="gts-login">
+  <div class="gts-bg" aria-hidden="true"><span></span><span></span><span></span></div>
+
+  <div class="gts-stage">
+    <div class="gts-brand-col">
+        <svg class="gts-glass-art" viewBox="0 0 620 460" aria-hidden="true" focusable="false">
+          <defs>
+            <clipPath id="gts-rock-clip"><path d="M0 150H200V206H360V262H520V318H620V460H0Z"/></clipPath>
+          </defs>
+          <!-- the bench being worked -->
+          <path class="gts-rock" d="M0 150H200V206H360V262H520V318H620V460H0Z"/>
+          <path class="gts-bench" d="M0 150H200V206H360V262H520V318H620"/>
+          <!-- 1. drilling — the rig tracks the row and each hole appears behind it -->
+          <g class="gts-rig"><path d="M0 122V150" /><path d="M-7 150H7L0 162Z" /></g>
+          <g class="gts-holes">
+            <line class="gts-hole gts-hole--1" x1="40" y1="150" x2="40" y2="188" pathLength="1"/>
+            <line class="gts-hole gts-hole--2" x1="76" y1="150" x2="76" y2="188" pathLength="1"/>
+            <line class="gts-hole gts-hole--3" x1="112" y1="150" x2="112" y2="188" pathLength="1"/>
+            <line class="gts-hole gts-hole--4" x1="148" y1="150" x2="148" y2="188" pathLength="1"/>
+            <line class="gts-hole gts-hole--5" x1="184" y1="150" x2="184" y2="188" pathLength="1"/>
+          </g>
+          <!-- 2. loading — each hole charges from the toe up -->
+          <g class="gts-charges">
+            <line class="gts-charge gts-charge--1" x1="40" y1="188" x2="40" y2="158" pathLength="1"/>
+            <line class="gts-charge gts-charge--2" x1="76" y1="188" x2="76" y2="158" pathLength="1"/>
+            <line class="gts-charge gts-charge--3" x1="112" y1="188" x2="112" y2="158" pathLength="1"/>
+            <line class="gts-charge gts-charge--4" x1="148" y1="188" x2="148" y2="158" pathLength="1"/>
+            <line class="gts-charge gts-charge--5" x1="184" y1="188" x2="184" y2="158" pathLength="1"/>
+          </g>
+          <!-- 3. firing — collars flash on the delay sequence -->
+          <g class="gts-fires">
+            <circle class="gts-fire gts-fire--1" cx="40" cy="150" r="8"/>
+            <circle class="gts-fire gts-fire--2" cx="76" cy="150" r="8"/>
+            <circle class="gts-fire gts-fire--3" cx="112" cy="150" r="8"/>
+            <circle class="gts-fire gts-fire--4" cx="148" cy="150" r="8"/>
+            <circle class="gts-fire gts-fire--5" cx="184" cy="150" r="8"/>
+          </g>
+          <!-- 4. the wavefront, travelling through rock -->
+          <g clip-path="url(#gts-rock-clip)">
+            <circle class="gts-wave gts-wave--1" cx="112" cy="168" r="140"/>
+            <circle class="gts-wave gts-wave--2" cx="112" cy="168" r="140"/>
+            <circle class="gts-wave gts-wave--3" cx="112" cy="168" r="140"/>
+          </g>
+          <!-- 5. monitors on the benches trip in order of distance -->
+          <g class="gts-sensors">
+            <line class="gts-mast" x1="300" y1="206" x2="300" y2="186"/>
+            <circle class="gts-ping gts-ping--1" cx="300" cy="184" r="10"/>
+            <circle class="gts-sensor gts-sensor--1" cx="300" cy="184" r="4.5"/>
+            <line class="gts-mast" x1="430" y1="262" x2="430" y2="242"/>
+            <circle class="gts-ping gts-ping--2" cx="430" cy="240" r="10"/>
+            <circle class="gts-sensor gts-sensor--2" cx="430" cy="240" r="4.5"/>
+            <line class="gts-mast" x1="560" y1="318" x2="560" y2="298"/>
+            <circle class="gts-ping gts-ping--3" cx="560" cy="296" r="10"/>
+            <circle class="gts-sensor gts-sensor--3" cx="560" cy="296" r="4.5"/>
+          </g>
+          <!-- 6. the record, always running -->
+          <g class="gts-tape">
+            <line class="gts-baseline" x1="0" y1="404" x2="620" y2="404"/>
+            <g class="gts-scroll">
+              <path class="gts-trace" transform="translate(0 404)" d="M0 -0.2 L10 0.2 L20 1.7 L30 -0.1 L40 0.0 L50 0.3 L60 -1.3 L70 0.0 L80 0.5 L90 1.2 L100 -1.6 L110 -0.8 L120 -1.6 L130 1.2 L140 0.8 L150 -1.8 L160 1.9 L170 1.9 L180 0.6 L190 0.5 L200 -1.4 L210 -1.9 L220 0.1 L230 -1.8 L240 -1.2 L250 17.1 L260 -12.1 L270 13.4 L280 -10.9 L290 11.2 L300 -7.8 L310 6.9 L320 -5.2 L330 4.7 L340 -3.5 L350 2.6 L360 -3.1 L370 2.6 L380 -2.0 L390 1.5 L400 -1.0 L410 -1.1 L420 -0.8 L430 -1.7 L440 1.1 L450 -0.4 L460 1.4 L470 -0.5 L480 1.8 L490 1.4 L500 -2.0 L510 -1.2 L520 1.6 L530 -0.1 L540 1.9 L550 -0.4 L560 -1.7 L570 0.5 L580 1.1 L590 -0.9 L600 -1.7 L610 -0.7 L620 1.9"/>
+              <path class="gts-trace" transform="translate(620 404)" d="M0 -0.2 L10 0.2 L20 1.7 L30 -0.1 L40 0.0 L50 0.3 L60 -1.3 L70 0.0 L80 0.5 L90 1.2 L100 -1.6 L110 -0.8 L120 -1.6 L130 1.2 L140 0.8 L150 -1.8 L160 1.9 L170 1.9 L180 0.6 L190 0.5 L200 -1.4 L210 -1.9 L220 0.1 L230 -1.8 L240 -1.2 L250 17.1 L260 -12.1 L270 13.4 L280 -10.9 L290 11.2 L300 -7.8 L310 6.9 L320 -5.2 L330 4.7 L340 -3.5 L350 2.6 L360 -3.1 L370 2.6 L380 -2.0 L390 1.5 L400 -1.0 L410 -1.1 L420 -0.8 L430 -1.7 L440 1.1 L450 -0.4 L460 1.4 L470 -0.5 L480 1.8 L490 1.4 L500 -2.0 L510 -1.2 L520 1.6 L530 -0.1 L540 1.9 L550 -0.4 L560 -1.7 L570 0.5 L580 1.1 L590 -0.9 L600 -1.7 L610 -0.7 L620 1.9"/>
+            </g>
+          </g>
+        </svg>
+      <div id="kc-header" class="gts-header">
+        <div id="kc-header-wrapper" class="gts-brand">
+          <img class="gts-logo" src="themes/gts-theme/login/resources/img/logo.svg" alt="EXPLORE" width="331" height="71">
         </div>
       </div>
+      <p class="gts-aside-line" data-i18n="brandTagline">Blast monitoring and reporting</p>
+      <p class="gts-aside-note" data-i18n="brandNote">Having trouble? Your workspace administrator can help.</p>
+    </div>
 
-      <div class="gts-theme-form-inner">
-        <div id="kc-header" class="gts-theme-header">
-          <div id="kc-header-wrapper" class="gts-theme-brand">
-            <img class="gts-theme-logo" src="themes/gts-theme/login/resources/img/logo.svg" alt="" onerror="this.style.display='none'" />
-          </div>
-        </div>
+    <main class="gts-card">
+      <div class="gts-card-inner" id="pv-panel"><!-- filled from templates below --></div>
+    </main>
+  </div>
+</div>
 
-        <div id="kc-content">
-          <div id="kc-content-wrapper">
-            <form id="kc-form-login" action="#" method="post">
-              <div class="gts-theme-form-group">
-                <label for="username" class="gts-theme-label" data-i18n="username">Mail<span class="required" aria-hidden="true">*</span></label>
-                <input id="username" class="gts-theme-input" name="username" value="" type="text" placeholder="mail" autocomplete="username" dir="ltr" />
-              </div>
+<div class="pv-bar">
+  <select id="pv-page" aria-label="Preview page"></select>
+  <button id="pv-theme" type="button">Dark</button>
+</div>
 
-              <div class="gts-theme-form-group">
-                <label for="password" class="gts-theme-label"><span data-i18n="password">Password</span><span class="required" aria-hidden="true">*</span></label>
-                <div class="gts-theme-input-group" dir="ltr">
-                  <input id="password" class="gts-theme-input" name="password" type="password" autocomplete="current-password" data-i18n-placeholder="password" placeholder="Password" />
-                  <button class="gts-theme-toggle" type="button" aria-label="Show password" aria-controls="password" data-password-toggle data-i18n-label-show="showPassword" data-i18n-label-hide="hidePassword" data-label-show="Show password" data-label-hide="Hide password">
-                    <span class="gts-theme-eye" aria-hidden="true"></span>
-                  </button>
-                </div>
-              </div>
-
-              <div id="kc-form-buttons" class="gts-theme-form-buttons">
-                <input class="gts-theme-btn gts-theme-btn-primary gts-theme-btn-lg" name="login" id="kc-login" type="submit" data-i18n-value="doLogIn" value="Connexion" />
-              </div>
-
-              <div class="gts-theme-form-forgot">
-                <a class="gts-theme-link" href="#" data-i18n="doForgotPassword">I forgot my password</a>
-              </div>
-            </form>
-
-          </div>
-        </div>
+<!-- ------------------------------------------------------------------ -->
+<!-- Page bodies. Markup mirrors the .ftl templates one-for-one.          -->
+<!-- ------------------------------------------------------------------ -->
+<template data-page="Sign in">
+  <div class="gts-locale" id="kc-locale">
+    <div id="kc-locale-wrapper" class="gts-locale-wrap">
+      <div id="kc-locale-dropdown" class="menu-button-links gts-locale-dropdown">
+        <button id="kc-current-locale-link" aria-haspopup="true" aria-expanded="false" aria-controls="language-switch1">English</button>
+        <ul role="menu" tabindex="-1" id="language-switch1" class="gts-locale-list">
+          <li class="gts-locale-item" role="none"><a role="menuitem" class="gts-locale-link" href="#" data-lang="en">English</a></li>
+          <li class="gts-locale-item" role="none"><a role="menuitem" class="gts-locale-link" href="#" data-lang="fr">Français</a></li>
+          <li class="gts-locale-item" role="none"><a role="menuitem" class="gts-locale-link" href="#" data-lang="es">Español</a></li>
+        </ul>
       </div>
     </div>
   </div>
-  <script src="themes/gts-theme/login/resources/js/script.js"></script>
+  <header class="gts-form-header">
+    <h1 class="gts-title" data-i18n="loginAccountTitle">Sign in</h1>
+    <p class="gts-subtitle" data-i18n="loginAccountSubtitle">Enter your email and password to continue.</p>
+  </header>
+  <div id="kc-content" class="gts-content"><div id="kc-content-wrapper">
+    <form class="gts-form" data-pending-form onsubmit="return false">
+      <div class="gts-field">
+        <label for="username" class="gts-label" data-i18n="username">Email</label>
+        <input id="username" name="username" type="text" class="gts-input" inputmode="email" autocapitalize="none" spellcheck="false" placeholder="you@company.com">
+      </div>
+      <div class="gts-field">
+        <div class="gts-label-row">
+          <label for="password" class="gts-label" data-i18n="password">Password</label>
+          <a class="gts-label-link" href="#" data-i18n="doForgotPassword">Forgot password?</a>
+        </div>
+        <div class="gts-input-group">
+          <input type="password" id="password" name="password" class="gts-input" autocomplete="current-password" data-caps-lock aria-describedby="password-caps" value="hunter2hunter2">
+          <button type="button" hidden data-reveal class="gts-reveal" aria-controls="password" aria-label="Show password" data-i18n-reveal data-label-show="Show password" data-label-hide="Hide password"><span class="gts-icon-eye" aria-hidden="true"></span></button>
+        </div>
+        <p class="gts-caps" id="password-caps" data-visible="false" aria-live="polite" data-i18n="capsLockOn">Caps Lock is on</p>
+      </div>
+      <div class="gts-options">
+        <label class="gts-check"><input type="checkbox" checked><span data-i18n="rememberMe">Keep me signed in</span></label>
+      </div>
+      <div class="gts-actions">
+        <input type="submit" class="gts-btn gts-btn-primary gts-btn-block gts-btn-lg" value="Sign in" data-i18n-value="loginAccountTitle" data-idle-label="Sign in" data-i18n-pending="pendingSignIn" data-pending-label="Signing in...">
+      </div>
+    </form>
+  </div></div>
+  <footer class="gts-footer"><img class="gts-corp" src="themes/gts-theme/login/resources/img/gts.png" width="241" height="63" alt="Global Technical Solutions"><p class="gts-footer-meta"><span>&copy; 2026 EXPLORE</span><span class="gts-version">V.01.34</span></p></footer>
+</template>
+
+<template data-page="Sign in — error">
+  <header class="gts-form-header">
+    <h1 class="gts-title" data-i18n="loginAccountTitle">Sign in</h1>
+    <p class="gts-subtitle" data-i18n="loginAccountSubtitle">Enter your email and password to continue.</p>
+  </header>
+  <div class="gts-content">
+    <div class="gts-alert gts-alert--error" role="alert">
+      <span class="gts-alert-icon" aria-hidden="true"></span>
+      <span class="gts-alert-text">Invalid email or password.</span>
+    </div>
+    <form class="gts-form" data-pending-form onsubmit="return false">
+      <div class="gts-field gts-field-invalid">
+        <label for="username2" class="gts-label" data-i18n="username">Email</label>
+        <input id="username2" type="text" class="gts-input" value="ada@explore.io" aria-invalid="true">
+      </div>
+      <div class="gts-field gts-field-invalid">
+        <div class="gts-label-row">
+          <label for="password2" class="gts-label" data-i18n="password">Password</label>
+          <a class="gts-label-link" href="#" data-i18n="doForgotPassword">Forgot password?</a>
+        </div>
+        <div class="gts-input-group">
+          <input type="password" id="password2" class="gts-input" aria-invalid="true" value="wrong">
+          <button type="button" hidden data-reveal class="gts-reveal" aria-controls="password2" aria-label="Show password" data-i18n-reveal data-label-show="Show password" data-label-hide="Hide password"><span class="gts-icon-eye" aria-hidden="true"></span></button>
+        </div>
+        <span class="gts-field-error" aria-live="polite">Invalid email or password.</span>
+      </div>
+      <div class="gts-actions">
+        <input type="submit" class="gts-btn gts-btn-primary gts-btn-block gts-btn-lg" value="Sign in" data-i18n-value="loginAccountTitle" data-idle-label="Sign in" data-i18n-pending="pendingSignIn" data-pending-label="Signing in...">
+      </div>
+    </form>
+  </div>
+  <footer class="gts-footer"><img class="gts-corp" src="themes/gts-theme/login/resources/img/gts.png" width="241" height="63" alt="Global Technical Solutions"><p class="gts-footer-meta"><span>&copy; 2026 EXPLORE</span><span class="gts-version">V.01.34</span></p></footer>
+</template>
+
+<template data-page="Two step — email">
+  <header class="gts-form-header">
+    <span class="gts-eyebrow" data-i18n="stepOneOfTwo">Step 1 of 2</span>
+    <h1 class="gts-title" data-i18n="loginAccountTitle">Sign in</h1>
+    <p class="gts-subtitle" data-i18n="loginUsernameSubtitle">Enter your email to continue.</p>
+  </header>
+  <div class="gts-content">
+    <form class="gts-form" data-pending-form onsubmit="return false">
+      <div class="gts-field">
+        <label for="username3" class="gts-label" data-i18n="username">Email</label>
+        <input id="username3" type="text" class="gts-input" inputmode="email" placeholder="you@company.com">
+      </div>
+      <div class="gts-options"><label class="gts-check"><input type="checkbox"><span data-i18n="rememberMe">Keep me signed in</span></label></div>
+      <div class="gts-actions">
+        <input type="submit" class="gts-btn gts-btn-primary gts-btn-block gts-btn-lg" value="Continue" data-i18n-value="doContinue" data-idle-label="Continue" data-i18n-pending="pendingDefault" data-pending-label="Working...">
+      </div>
+    </form>
+  </div>
+  <footer class="gts-footer"><img class="gts-corp" src="themes/gts-theme/login/resources/img/gts.png" width="241" height="63" alt="Global Technical Solutions"><p class="gts-footer-meta"><span>&copy; 2026 EXPLORE</span><span class="gts-version">V.01.34</span></p></footer>
+</template>
+
+<template data-page="Two step — password">
+  <header class="gts-form-header">
+    <span class="gts-eyebrow" data-i18n="stepTwoOfTwo">Step 2 of 2</span>
+    <h1 class="gts-title" data-i18n="loginPasswordTitle">Enter your password</h1>
+    <p class="gts-subtitle" data-i18n="loginPasswordSubtitle">Enter your password to finish signing in.</p>
+  </header>
+  <div class="gts-identity">
+    <span class="gts-identity-name">ada.lovelace@explore.io</span>
+    <a href="#" data-i18n="doChange">Change</a>
+  </div>
+  <div class="gts-content">
+    <form class="gts-form" data-pending-form onsubmit="return false">
+      <div class="gts-field">
+        <div class="gts-label-row">
+          <label for="password3" class="gts-label" data-i18n="password">Password</label>
+          <a class="gts-label-link" href="#" data-i18n="doForgotPassword">Forgot password?</a>
+        </div>
+        <div class="gts-input-group">
+          <input type="password" id="password3" class="gts-input" data-caps-lock aria-describedby="password3-caps">
+          <button type="button" hidden data-reveal class="gts-reveal" aria-controls="password3" aria-label="Show password" data-i18n-reveal data-label-show="Show password" data-label-hide="Hide password"><span class="gts-icon-eye" aria-hidden="true"></span></button>
+        </div>
+        <p class="gts-caps" id="password3-caps" data-visible="false" aria-live="polite" data-i18n="capsLockOn">Caps Lock is on</p>
+      </div>
+      <div class="gts-actions">
+        <input type="submit" class="gts-btn gts-btn-primary gts-btn-block gts-btn-lg" value="Sign in" data-i18n-value="loginAccountTitle" data-idle-label="Sign in" data-i18n-pending="pendingSignIn" data-pending-label="Signing in...">
+      </div>
+    </form>
+    <div class="gts-links"><a href="#" data-i18n="doTryAnotherWay">Try another way</a></div>
+  </div>
+  <footer class="gts-footer"><img class="gts-corp" src="themes/gts-theme/login/resources/img/gts.png" width="241" height="63" alt="Global Technical Solutions"><p class="gts-footer-meta"><span>&copy; 2026 EXPLORE</span><span class="gts-version">V.01.34</span></p></footer>
+</template>
+
+<template data-page="Authentication code">
+  <header class="gts-form-header">
+    <h1 class="gts-title" data-i18n="loginAccountTitle">Sign in</h1>
+    <p class="gts-subtitle" data-i18n="otpSubtitle">Enter the code from your authenticator app.</p>
+  </header>
+  <div class="gts-content">
+    <form class="gts-form" data-pending-form onsubmit="return false">
+      <div class="gts-field">
+        <label for="otp" class="gts-label" data-i18n="loginOtpOneTime">Authentication code</label>
+        <input id="otp" class="gts-input gts-input-code" inputmode="numeric" maxlength="8" autocomplete="one-time-code" value="481920">
+      </div>
+      <div class="gts-actions">
+        <input type="submit" class="gts-btn gts-btn-primary gts-btn-block gts-btn-lg" value="Sign in" data-i18n-value="loginAccountTitle" data-idle-label="Sign in" data-i18n-pending="pendingVerifying" data-pending-label="Verifying...">
+      </div>
+    </form>
+  </div>
+  <footer class="gts-footer"><img class="gts-corp" src="themes/gts-theme/login/resources/img/gts.png" width="241" height="63" alt="Global Technical Solutions"><p class="gts-footer-meta"><span>&copy; 2026 EXPLORE</span><span class="gts-version">V.01.34</span></p></footer>
+</template>
+
+<template data-page="Reset password">
+  <header class="gts-form-header">
+    <h1 class="gts-title" data-i18n="emailForgotTitle">Reset your password</h1>
+    <p class="gts-subtitle" data-i18n="emailInstruction">Enter your email address and we'll send you a link to set a new password.</p>
+  </header>
+  <div class="gts-content">
+    <form class="gts-form" data-pending-form onsubmit="return false">
+      <div class="gts-field">
+        <label for="username4" class="gts-label" data-i18n="username">Email</label>
+        <input id="username4" type="text" class="gts-input" inputmode="email" placeholder="you@company.com">
+      </div>
+      <div class="gts-actions">
+        <input type="submit" class="gts-btn gts-btn-primary gts-btn-block gts-btn-lg" value="Send reset instructions" data-i18n-value="doSendResetInstructions" data-idle-label="Send reset instructions" data-i18n-pending="pendingSending" data-pending-label="Sending...">
+      </div>
+    </form>
+    <div id="kc-info" class="gts-signup"><div class="gts-info-area"><a href="#" data-i18n="backToLogin">Back to sign in</a></div></div>
+  </div>
+  <footer class="gts-footer"><img class="gts-corp" src="themes/gts-theme/login/resources/img/gts.png" width="241" height="63" alt="Global Technical Solutions"><p class="gts-footer-meta"><span>&copy; 2026 EXPLORE</span><span class="gts-version">V.01.34</span></p></footer>
+</template>
+
+<template data-page="New password">
+  <header class="gts-form-header">
+    <h1 class="gts-title" data-i18n="updatePasswordTitle">Set a new password</h1>
+    <p class="gts-subtitle" data-i18n="updatePasswordSubtitle">Choose a password you haven't used here before.</p>
+  </header>
+  <div class="gts-content">
+    <form class="gts-form" data-pending-form onsubmit="return false">
+      <div class="gts-field">
+        <label for="pw-new" class="gts-label" data-i18n="passwordNew">New password</label>
+        <div class="gts-input-group">
+          <input type="password" id="pw-new" class="gts-input" data-caps-lock aria-describedby="pw-new-caps">
+          <button type="button" hidden data-reveal class="gts-reveal" aria-controls="pw-new" aria-label="Show password" data-i18n-reveal data-label-show="Show password" data-label-hide="Hide password"><span class="gts-icon-eye" aria-hidden="true"></span></button>
+        </div>
+        <p class="gts-caps" id="pw-new-caps" data-visible="false" aria-live="polite" data-i18n="capsLockOn">Caps Lock is on</p>
+      </div>
+      <div class="gts-field">
+        <label for="pw-confirm" class="gts-label" data-i18n="passwordConfirm">Confirm password</label>
+        <div class="gts-input-group">
+          <input type="password" id="pw-confirm" class="gts-input" data-caps-lock aria-describedby="pw-confirm-caps">
+          <button type="button" hidden data-reveal class="gts-reveal" aria-controls="pw-confirm" aria-label="Show password" data-i18n-reveal data-label-show="Show password" data-label-hide="Hide password"><span class="gts-icon-eye" aria-hidden="true"></span></button>
+        </div>
+        <p class="gts-caps" id="pw-confirm-caps" data-visible="false" aria-live="polite" data-i18n="capsLockOn">Caps Lock is on</p>
+      </div>
+      <div class="gts-options gts-settings"><label class="gts-check"><input type="checkbox"><span data-i18n="logoutOtherSessions">Sign out of other devices</span></label></div>
+      <div class="gts-actions">
+        <input type="submit" class="gts-btn gts-btn-primary gts-btn-block gts-btn-lg" value="Save" data-i18n-value="doSubmit" data-idle-label="Save" data-i18n-pending="pendingSaving" data-pending-label="Saving...">
+        <button type="button" class="gts-btn gts-btn-ghost gts-btn-lg" data-i18n="doCancel">Cancel</button>
+      </div>
+    </form>
+  </div>
+  <footer class="gts-footer"><img class="gts-corp" src="themes/gts-theme/login/resources/img/gts.png" width="241" height="63" alt="Global Technical Solutions"><p class="gts-footer-meta"><span>&copy; 2026 EXPLORE</span><span class="gts-version">V.01.34</span></p></footer>
+</template>
+
+<template data-page="Try another way">
+  <header class="gts-form-header">
+    <h1 class="gts-title">Choose how to sign in</h1>
+    <p class="gts-subtitle">Pick one of the methods set up on your account.</p>
+  </header>
+  <div class="gts-content">
+    <ul class="gts-auth-list">
+      <li><a href="#" class="gts-auth-item">
+        <span class="gts-auth-icon" aria-hidden="true"></span>
+        <span class="gts-auth-body"><span class="gts-auth-heading" data-i18n="password">Password</span><span class="gts-auth-desc">Sign in with your account password</span></span>
+        <span class="gts-auth-arrow"><span class="gts-auth-arrow-icon"></span></span>
+      </a></li>
+      <li><a href="#" class="gts-auth-item">
+        <span class="gts-auth-icon" aria-hidden="true"></span>
+        <span class="gts-auth-body"><span class="gts-auth-heading">Authenticator app</span><span class="gts-auth-desc">Enter a six-digit code</span></span>
+        <span class="gts-auth-arrow"><span class="gts-auth-arrow-icon"></span></span>
+      </a></li>
+    </ul>
+  </div>
+  <footer class="gts-footer"><img class="gts-corp" src="themes/gts-theme/login/resources/img/gts.png" width="241" height="63" alt="Global Technical Solutions"><p class="gts-footer-meta"><span>&copy; 2026 EXPLORE</span><span class="gts-version">V.01.34</span></p></footer>
+</template>
+
+<template data-page="Verify email">
+  <header class="gts-form-header">
+    <h1 class="gts-title" data-i18n="emailVerifyTitle">Verify your email</h1>
+    <p class="gts-subtitle" data-i18n="emailVerifyInstruction1">We sent a verification link to ada@explore.io.</p>
+  </header>
+  <div class="gts-content">
+    <p class="gts-prose" data-i18n="emailVerifySubtitle">Open the link to continue. Not there? Check your spam folder, or send it again.</p>
+    <div class="gts-actions"><a href="#" class="gts-btn gts-btn-ghost gts-btn-lg" data-i18n="doResendEmail">Send the email again</a></div>
+  </div>
+  <footer class="gts-footer"><img class="gts-corp" src="themes/gts-theme/login/resources/img/gts.png" width="241" height="63" alt="Global Technical Solutions"><p class="gts-footer-meta"><span>&copy; 2026 EXPLORE</span><span class="gts-version">V.01.34</span></p></footer>
+</template>
+
+<template data-page="Sign out">
+  <header class="gts-form-header">
+    <h1 class="gts-title" data-i18n="doLogout">Sign out</h1>
+    <p class="gts-subtitle" data-i18n="logoutConfirmHeader">You'll need to sign in again to get back in.</p>
+  </header>
+  <div class="gts-content">
+    <form class="gts-form" data-pending-form onsubmit="return false">
+      <div class="gts-actions">
+        <input type="submit" class="gts-btn gts-btn-primary gts-btn-block gts-btn-lg" value="Sign out" data-i18n-value="doLogout" data-idle-label="Sign out" data-i18n-pending="pendingDefault" data-pending-label="Working...">
+        <a href="#" class="gts-btn gts-btn-ghost gts-btn-lg" data-i18n="backToApplication">Back to the app</a>
+      </div>
+    </form>
+  </div>
+  <footer class="gts-footer"><img class="gts-corp" src="themes/gts-theme/login/resources/img/gts.png" width="241" height="63" alt="Global Technical Solutions"><p class="gts-footer-meta"><span>&copy; 2026 EXPLORE</span><span class="gts-version">V.01.34</span></p></footer>
+</template>
+
+<template data-page="Terms">
+  <header class="gts-form-header">
+    <h1 class="gts-title" data-i18n="termsTitle">Terms and conditions</h1>
+    <p class="gts-subtitle" data-i18n="termsSubtitle">Read the terms below, then accept to continue.</p>
+  </header>
+  <div class="gts-content">
+    <div class="gts-terms" tabindex="0" role="region" aria-label="Terms and conditions">
+      <p>These terms govern your use of the EXPLORE workspace. Your organisation's administrator decides who gets access and what each person can see.</p>
+      <p>Sign-in activity is recorded so administrators can review access. Sessions end automatically after a period of inactivity.</p>
+      <p>Keep your password to yourself. If you think someone else has it, change it and tell your administrator.</p>
+    </div>
+    <form class="gts-form" onsubmit="return false">
+      <div class="gts-actions">
+        <input type="submit" class="gts-btn gts-btn-primary gts-btn-block gts-btn-lg" value="Accept and continue" data-i18n-value="doAccept">
+        <input type="submit" class="gts-btn gts-btn-ghost gts-btn-lg" value="Decline" data-i18n-value="doDecline">
+      </div>
+    </form>
+  </div>
+  <footer class="gts-footer"><img class="gts-corp" src="themes/gts-theme/login/resources/img/gts.png" width="241" height="63" alt="Global Technical Solutions"><p class="gts-footer-meta"><span>&copy; 2026 EXPLORE</span><span class="gts-version">V.01.34</span></p></footer>
+</template>
+
+<template data-page="Page expired">
+  <header class="gts-form-header">
+    <h1 class="gts-title" data-i18n="pageExpiredTitle">This page expired</h1>
+    <p class="gts-subtitle" data-i18n="pageExpiredSubtitle">The sign-in took too long. Pick up where you left off, or start again.</p>
+  </header>
+  <div class="gts-content">
+    <div class="gts-actions">
+      <a href="#" class="gts-btn gts-btn-primary gts-btn-block gts-btn-lg" data-i18n="doContinueSignIn">Continue signing in</a>
+      <a href="#" class="gts-btn gts-btn-ghost gts-btn-lg" data-i18n="doStartOver">Start over</a>
+    </div>
+  </div>
+  <footer class="gts-footer"><img class="gts-corp" src="themes/gts-theme/login/resources/img/gts.png" width="241" height="63" alt="Global Technical Solutions"><p class="gts-footer-meta"><span>&copy; 2026 EXPLORE</span><span class="gts-version">V.01.34</span></p></footer>
+</template>
+
+<template data-page="Error">
+  <header class="gts-form-header">
+    <h1 class="gts-title" data-i18n="errorTitle">Something went wrong</h1>
+  </header>
+  <div class="gts-content">
+    <p class="gts-prose">We couldn't complete the sign-in. Try again, and if it keeps happening, contact your workspace administrator.</p>
+    <div class="gts-actions"><a href="#" class="gts-btn gts-btn-primary gts-btn-block gts-btn-lg" data-i18n="backToApplication">Back to the app</a></div>
+  </div>
+  <footer class="gts-footer"><img class="gts-corp" src="themes/gts-theme/login/resources/img/gts.png" width="241" height="63" alt="Global Technical Solutions"><p class="gts-footer-meta"><span>&copy; 2026 EXPLORE</span><span class="gts-version">V.01.34</span></p></footer>
+</template>
+
+<!-- Message bundles, copied from the theme by tools/sync-preview-i18n.py -->
+<script id="pv-i18n" type="application/json">
+{
+ "en": {
+  "backToApplication": "Back to the app",
+  "backToLogin": "Back to sign in",
+  "brandName": "EXPLORE",
+  "brandNote": "Having trouble? Your workspace administrator can help.",
+  "brandTagline": "Blast monitoring and reporting",
+  "capLocalization": "Blast localization",
+  "capMeasurement": "Post-blast measurement",
+  "capMonitoring": "Environmental monitoring",
+  "capReporting": "Data export and reporting",
+  "capsLockOn": "Caps Lock is on",
+  "companyName": "Global Technical Solutions",
+  "doAccept": "Accept and continue",
+  "doCancel": "Cancel",
+  "doChange": "Change",
+  "doContinue": "Continue",
+  "doContinueSignIn": "Continue signing in",
+  "doDecline": "Decline",
+  "doForgotPassword": "Forgot password?",
+  "doLogIn": "Sign in",
+  "doLogout": "Sign out",
+  "doResendEmail": "Send the email again",
+  "doSendResetInstructions": "Send reset instructions",
+  "doStartOver": "Start over",
+  "doSubmit": "Save",
+  "doTryAnotherWay": "Try another way",
+  "email": "Email",
+  "emailForgotTitle": "Reset your password",
+  "emailInstruction": "Enter your email address and we'll send you a link to set a new password.",
+  "emailInstructionUsername": "Enter your username and we'll send you a link to set a new password.",
+  "emailVerifyInstruction1": "We sent a verification link to {0}.",
+  "emailVerifySubtitle": "Open the link to continue. Not there? Check your spam folder, or send it again.",
+  "emailVerifyTitle": "Verify your email",
+  "errorTitle": "Something went wrong",
+  "hidePassword": "Hide password",
+  "languages": "Languages",
+  "loginAccountSubtitle": "Enter your email and password to continue.",
+  "loginAccountTitle": "Sign in",
+  "loginOtpDevice": "Choose a device",
+  "loginOtpOneTime": "Authentication code",
+  "loginPasswordSubtitle": "Enter your password to finish signing in.",
+  "loginPasswordTitle": "Enter your password",
+  "loginProfileSubtitle": "We need a little more information before you continue.",
+  "loginProfileTitle": "Update your details",
+  "loginTitle": "Sign in to {0}",
+  "loginTitleHtml": "Sign in to {0}",
+  "loginUsernameSubtitle": "Enter your email to continue.",
+  "logoutConfirmHeader": "You'll need to sign in again to get back in.",
+  "logoutConfirmTitle": "Sign out",
+  "logoutOtherSessions": "Sign out of other devices",
+  "otpSubtitle": "Enter the code from your authenticator app.",
+  "pageExpiredSubtitle": "The sign-in took too long. Pick up where you left off, or start again.",
+  "pageExpiredTitle": "This page expired",
+  "password": "Password",
+  "passwordConfirm": "Confirm password",
+  "passwordNew": "New password",
+  "pendingDefault": "Working...",
+  "pendingSaving": "Saving...",
+  "pendingSending": "Sending...",
+  "pendingSignIn": "Signing in...",
+  "pendingVerifying": "Verifying...",
+  "proceedWithAction": "Continue",
+  "rememberMe": "Keep me signed in",
+  "requiredFields": "Required fields",
+  "restartLoginTooltip": "Start the sign-in over",
+  "showPassword": "Show password",
+  "statusLive": "Monitoring active",
+  "stepOneOfTwo": "Step 1 of 2",
+  "stepTwoOfTwo": "Step 2 of 2",
+  "termsSubtitle": "Read the terms below, then accept to continue.",
+  "termsTitle": "Terms and conditions",
+  "updatePasswordSubtitle": "Choose a password you haven't used here before.",
+  "updatePasswordTitle": "Set a new password",
+  "username": "Email",
+  "usernameOrEmail": "Email"
+ },
+ "es": {
+  "backToApplication": "Volver a la aplicación",
+  "backToLogin": "Volver al inicio de sesión",
+  "brandName": "EXPLORE",
+  "brandNote": "¿Algún problema? Tu administrador puede ayudarte.",
+  "brandTagline": "Monitoreo de voladuras e informes",
+  "capLocalization": "Localización de voladuras",
+  "capMeasurement": "Medición posvoladura",
+  "capMonitoring": "Monitoreo ambiental",
+  "capReporting": "Exportación de datos e informes",
+  "capsLockOn": "Bloq Mayús está activado",
+  "companyName": "Global Technical Solutions",
+  "doAccept": "Aceptar y continuar",
+  "doCancel": "Cancelar",
+  "doChange": "Cambiar",
+  "doContinue": "Continuar",
+  "doContinueSignIn": "Seguir con el inicio de sesión",
+  "doDecline": "Rechazar",
+  "doForgotPassword": "¿Olvidaste tu contraseña?",
+  "doLogIn": "Iniciar sesión",
+  "doLogout": "Cerrar sesión",
+  "doResendEmail": "Reenviar el correo",
+  "doSendResetInstructions": "Enviar instrucciones",
+  "doStartOver": "Empezar de nuevo",
+  "doSubmit": "Guardar",
+  "doTryAnotherWay": "Probar otro método",
+  "email": "Correo electrónico",
+  "emailForgotTitle": "Restablecer la contraseña",
+  "emailInstruction": "Escribe tu correo y te enviaremos un enlace para crear una contraseña nueva.",
+  "emailInstructionUsername": "Escribe tu usuario y te enviaremos un enlace para crear una contraseña nueva.",
+  "emailVerifyInstruction1": "Enviamos un enlace de verificación a {0}.",
+  "emailVerifySubtitle": "Abre el enlace para continuar. ¿No llegó? Revisa el spam o vuelve a enviarlo.",
+  "emailVerifyTitle": "Verifica tu correo",
+  "errorTitle": "Algo ha salido mal",
+  "hidePassword": "Ocultar contraseña",
+  "languages": "Idiomas",
+  "loginAccountSubtitle": "Escribe tu correo y tu contraseña para continuar.",
+  "loginAccountTitle": "Iniciar sesión",
+  "loginOtpDevice": "Elige un dispositivo",
+  "loginOtpOneTime": "Código de autenticación",
+  "loginPasswordSubtitle": "Escribe tu contraseña para terminar de iniciar sesión.",
+  "loginPasswordTitle": "Escribe tu contraseña",
+  "loginProfileSubtitle": "Necesitamos algunos datos más antes de continuar.",
+  "loginProfileTitle": "Actualiza tus datos",
+  "loginTitle": "Iniciar sesión en {0}",
+  "loginTitleHtml": "Iniciar sesión en {0}",
+  "loginUsernameSubtitle": "Escribe tu correo para continuar.",
+  "logoutConfirmHeader": "Tendrás que iniciar sesión otra vez para volver.",
+  "logoutConfirmTitle": "Cerrar sesión",
+  "logoutOtherSessions": "Cerrar sesión en otros dispositivos",
+  "otpSubtitle": "Escribe el código de tu aplicación de autenticación.",
+  "pageExpiredSubtitle": "El inicio de sesión tardó demasiado. Retoma donde lo dejaste o empieza de nuevo.",
+  "pageExpiredTitle": "Esta página ha caducado",
+  "password": "Contraseña",
+  "passwordConfirm": "Confirma la contraseña",
+  "passwordNew": "Nueva contraseña",
+  "pendingDefault": "Procesando...",
+  "pendingSaving": "Guardando...",
+  "pendingSending": "Enviando...",
+  "pendingSignIn": "Iniciando sesión...",
+  "pendingVerifying": "Verificando...",
+  "proceedWithAction": "Continuar",
+  "rememberMe": "Mantener la sesión iniciada",
+  "requiredFields": "Campos obligatorios",
+  "restartLoginTooltip": "Empezar el inicio de sesión de nuevo",
+  "showPassword": "Mostrar contraseña",
+  "statusLive": "Monitoreo activo",
+  "stepOneOfTwo": "Paso 1 de 2",
+  "stepTwoOfTwo": "Paso 2 de 2",
+  "termsSubtitle": "Lee los términos y acepta para continuar.",
+  "termsTitle": "Términos y condiciones",
+  "updatePasswordSubtitle": "Elige una contraseña que no hayas usado aquí antes.",
+  "updatePasswordTitle": "Crea una contraseña nueva",
+  "username": "Correo electrónico",
+  "usernameOrEmail": "Correo electrónico"
+ },
+ "fr": {
+  "backToApplication": "Retour à l'application",
+  "backToLogin": "Retour à la connexion",
+  "brandName": "EXPLORE",
+  "brandNote": "Un souci ? Votre administrateur peut vous aider.",
+  "brandTagline": "Surveillance des tirs et rapports",
+  "capLocalization": "Localisation des tirs",
+  "capMeasurement": "Mesures après tir",
+  "capMonitoring": "Surveillance environnementale",
+  "capReporting": "Export des données et rapports",
+  "capsLockOn": "La touche Verr. Maj est activée",
+  "companyName": "Global Technical Solutions",
+  "doAccept": "Accepter et continuer",
+  "doCancel": "Annuler",
+  "doChange": "Modifier",
+  "doContinue": "Continuer",
+  "doContinueSignIn": "Reprendre la connexion",
+  "doDecline": "Refuser",
+  "doForgotPassword": "Mot de passe oublié ?",
+  "doLogIn": "Se connecter",
+  "doLogout": "Se déconnecter",
+  "doResendEmail": "Renvoyer l'e-mail",
+  "doSendResetInstructions": "Envoyer les instructions",
+  "doStartOver": "Recommencer",
+  "doSubmit": "Enregistrer",
+  "doTryAnotherWay": "Essayer une autre méthode",
+  "email": "E-mail",
+  "emailForgotTitle": "Réinitialiser le mot de passe",
+  "emailInstruction": "Saisissez votre adresse e-mail : nous vous enverrons un lien pour définir un nouveau mot de passe.",
+  "emailInstructionUsername": "Saisissez votre identifiant : nous vous enverrons un lien pour définir un nouveau mot de passe.",
+  "emailVerifyInstruction1": "Nous avons envoyé un lien de vérification à {0}.",
+  "emailVerifySubtitle": "Ouvrez le lien pour continuer. Rien reçu ? Vérifiez vos spams ou renvoyez l'e-mail.",
+  "emailVerifyTitle": "Vérifiez votre e-mail",
+  "errorTitle": "Une erreur est survenue",
+  "hidePassword": "Masquer le mot de passe",
+  "languages": "Langues",
+  "loginAccountSubtitle": "Saisissez votre e-mail et votre mot de passe pour continuer.",
+  "loginAccountTitle": "Connexion",
+  "loginOtpDevice": "Choisissez un appareil",
+  "loginOtpOneTime": "Code d'authentification",
+  "loginPasswordSubtitle": "Saisissez votre mot de passe pour terminer la connexion.",
+  "loginPasswordTitle": "Saisissez votre mot de passe",
+  "loginProfileSubtitle": "Il nous manque quelques informations avant de continuer.",
+  "loginProfileTitle": "Complétez vos informations",
+  "loginTitle": "Connexion à {0}",
+  "loginTitleHtml": "Connexion à {0}",
+  "loginUsernameSubtitle": "Saisissez votre e-mail pour continuer.",
+  "logoutConfirmHeader": "Vous devrez vous reconnecter pour revenir.",
+  "logoutConfirmTitle": "Déconnexion",
+  "logoutOtherSessions": "Déconnecter les autres appareils",
+  "otpSubtitle": "Saisissez le code de votre application d'authentification.",
+  "pageExpiredSubtitle": "La connexion a pris trop de temps. Reprenez où vous en étiez ou recommencez.",
+  "pageExpiredTitle": "Cette page a expiré",
+  "password": "Mot de passe",
+  "passwordConfirm": "Confirmez le mot de passe",
+  "passwordNew": "Nouveau mot de passe",
+  "pendingDefault": "En cours...",
+  "pendingSaving": "Enregistrement...",
+  "pendingSending": "Envoi...",
+  "pendingSignIn": "Connexion...",
+  "pendingVerifying": "Vérification...",
+  "proceedWithAction": "Continuer",
+  "rememberMe": "Rester connecté",
+  "requiredFields": "Champs obligatoires",
+  "restartLoginTooltip": "Recommencer la connexion",
+  "showPassword": "Afficher le mot de passe",
+  "statusLive": "Surveillance active",
+  "stepOneOfTwo": "Étape 1 sur 2",
+  "stepTwoOfTwo": "Étape 2 sur 2",
+  "termsSubtitle": "Lisez les conditions ci-dessous, puis acceptez pour continuer.",
+  "termsTitle": "Conditions d'utilisation",
+  "updatePasswordSubtitle": "Choisissez un mot de passe que vous n'avez pas déjà utilisé ici.",
+  "updatePasswordTitle": "Définir un nouveau mot de passe",
+  "username": "E-mail",
+  "usernameOrEmail": "E-mail"
+ }
+}
+</script>
+<script src="themes/gts-theme/login/resources/js/script.js"></script>
+<script>
+  // Preview chrome. None of this ships with the theme.
+  var panel = document.getElementById("pv-panel");
+  var select = document.getElementById("pv-page");
+  var themeBtn = document.getElementById("pv-theme");
+  var aside = document.querySelector(".gts-brand-col");
+  var pages = Array.prototype.slice.call(document.querySelectorAll("template[data-page]"));
+
+  pages.forEach(function (tpl, i) {
+    var opt = document.createElement("option");
+    opt.value = String(i);
+    opt.textContent = tpl.dataset.page;
+    select.appendChild(opt);
+  });
+
+  function replayArt() {
+    if (!aside) return;
+    aside.querySelectorAll(".gts-art *").forEach(function (el) {
+      el.style.animation = "none";
+      void el.getBoundingClientRect();
+      el.style.animation = "";
+    });
+  }
+
+  function show(index) {
+    panel.replaceChildren(pages[index].content.cloneNode(true));
+    // re-run the theme's own enhancement on the freshly injected markup
+    document.dispatchEvent(new Event("DOMContentLoaded"));
+    applyLang(lang);
+    replayArt();
+    localStorage.setItem("pv-page", String(index));
+  }
+
+  select.addEventListener("change", function () { show(Number(select.value)); });
+
+  // Forms are inert here, so release the pending button after a beat.
+  document.addEventListener("submit", function () {
+    setTimeout(function () { window.dispatchEvent(new PageTransitionEvent("pageshow", { persisted: true })); }, 1400);
+  }, true);
+
+  // --- Translations ------------------------------------------------------
+  // On the real pages Keycloak resolves every string from the bundles; here we
+  // read the same bundles so the switcher shows the wording that ships.
+  var I18N = JSON.parse(document.getElementById("pv-i18n").textContent || "{}");
+  var LANG_LABEL = { en: "English", fr: "Français", es: "Español" };
+  var lang = "en";
+
+  function translate(key, fallback) {
+    var table = I18N[lang] || {};
+    return table[key] || (I18N.en || {})[key] || fallback;
+  }
+
+  function applyLang(next) {
+    if (!I18N[next]) return;
+    lang = next;
+    document.documentElement.setAttribute("lang", lang);
+
+    document.querySelectorAll("[data-i18n]").forEach(function (el) {
+      el.textContent = translate(el.dataset.i18n, el.textContent).replace("{0}", "ada@explore.io");
+    });
+    document.querySelectorAll("[data-i18n-value]").forEach(function (el) {
+      var text = translate(el.dataset.i18nValue, el.value);
+      el.value = text;
+      el.dataset.idleLabel = text;
+    });
+    document.querySelectorAll("[data-i18n-pending]").forEach(function (el) {
+      el.dataset.pendingLabel = translate(el.dataset.i18nPending, el.dataset.pendingLabel);
+    });
+    document.querySelectorAll("[data-i18n-reveal]").forEach(function (el) {
+      el.dataset.labelShow = translate("showPassword", el.dataset.labelShow);
+      el.dataset.labelHide = translate("hidePassword", el.dataset.labelHide);
+      el.setAttribute("aria-label", el.getAttribute("aria-pressed") === "true"
+        ? el.dataset.labelHide : el.dataset.labelShow);
+    });
+
+    var current = document.getElementById("kc-current-locale-link");
+    if (current) current.textContent = LANG_LABEL[lang];
+    localStorage.setItem("pv-lang", lang);
+  }
+
+  // Locale menu: the real pages use Keycloak's menu-button-links.js.
+  document.addEventListener("click", function (event) {
+    var choice = event.target.closest("[data-lang]");
+    if (choice) {
+      event.preventDefault();
+      applyLang(choice.dataset.lang);
+    }
+
+    var button = event.target.closest("#kc-current-locale-link");
+    var list = document.getElementById("language-switch1");
+    if (!list) return;
+    if (button) {
+      var open = button.getAttribute("aria-expanded") === "true";
+      button.setAttribute("aria-expanded", String(!open));
+      list.style.display = open ? "" : "block";
+      event.stopPropagation();
+      return;
+    }
+    var current = document.getElementById("kc-current-locale-link");
+    if (current) current.setAttribute("aria-expanded", "false");
+    list.style.display = "";
+  });
+
+  function applyTheme(theme) {
+    document.documentElement.dataset.theme = theme;
+    themeBtn.textContent = theme === "dark" ? "Light" : "Dark";
+    localStorage.setItem("pv-theme", theme);
+  }
+
+  themeBtn.addEventListener("click", function () {
+    applyTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
+  });
+
+  // ?theme=dark, ?page=3 and ?lang=fr make single states easy to link or screenshot.
+  var params = new URLSearchParams(location.search);
+  var savedTheme = params.get("theme") || localStorage.getItem("pv-theme");
+  applyTheme(savedTheme === "dark" || savedTheme === "light" ? savedTheme
+    : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
+  lang = params.get("lang") || localStorage.getItem("pv-lang") || "en";
+  if (!I18N[lang]) lang = "en";
+  var savedPage = Number(params.get("page") || localStorage.getItem("pv-page") || 0);
+  select.value = String(savedPage >= 0 && savedPage < pages.length ? savedPage : 0);
+  show(Number(select.value));
+</script>
 </body>
 </html>

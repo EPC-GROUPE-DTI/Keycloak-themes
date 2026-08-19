@@ -1,23 +1,21 @@
 <#import "template.ftl" as layout>
 <@layout.registrationLayout displayMessage=false; section>
     <#if section = "header">
-        <#if messageHeader??>
-            ${kcSanitize(msg("${messageHeader}"))?no_esc}
-        <#else>
-            ${message.summary}
-        </#if>
+        <#if messageHeader??>${kcSanitize(msg("${messageHeader}"))?no_esc}<#else>${kcSanitize(message.summary)?no_esc}</#if>
     <#elseif section = "form">
         <div id="kc-info-message">
-            <p class="mytheme-instruction">${message.summary}<#if requiredActions??><#list requiredActions>: <b><#items as reqActionItem>${kcSanitize(msg("requiredAction.${reqActionItem}"))?no_esc}<#sep>, </#items></b></#list><#else></#if></p>
-            <#if skipLink??>
-            <#else>
-                <#if pageRedirectUri?has_content>
-                    <p><a class="mytheme-link" href="${pageRedirectUri}">${kcSanitize(msg("backToApplication"))?no_esc}</a></p>
-                <#elseif actionUri?has_content>
-                    <p><a class="mytheme-link" href="${actionUri}">${kcSanitize(msg("proceedWithAction"))?no_esc}</a></p>
-                <#elseif (client.baseUrl)?has_content>
-                    <p><a class="mytheme-link" href="${client.baseUrl}">${kcSanitize(msg("backToApplication"))?no_esc}</a></p>
-                </#if>
+            <p class="gts-prose">${kcSanitize(message.summary)?no_esc}<#if requiredActions??><#list requiredActions>: <strong><#items as reqActionItem>${kcSanitize(msg("requiredAction.${reqActionItem}"))?no_esc}<#sep>, </#items></strong></#list></#if></p>
+
+            <#if !skipLink??>
+                <div class="${properties.kcFormButtonsClass!}">
+                    <#if pageRedirectUri?has_content>
+                        <a href="${pageRedirectUri}" class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}">${kcSanitize(msg("backToApplication"))?no_esc}</a>
+                    <#elseif actionUri?has_content>
+                        <a href="${actionUri}" class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}">${kcSanitize(msg("proceedWithAction"))?no_esc}</a>
+                    <#elseif client?? && client.baseUrl?has_content>
+                        <a href="${client.baseUrl}" class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}">${kcSanitize(msg("backToApplication"))?no_esc}</a>
+                    </#if>
+                </div>
             </#if>
         </div>
     </#if>

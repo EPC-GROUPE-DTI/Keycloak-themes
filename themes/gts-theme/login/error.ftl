@@ -4,12 +4,12 @@
         ${kcSanitize(msg("errorTitle"))?no_esc}
     <#elseif section = "form">
         <div id="kc-error-message">
-            <p class="mytheme-instruction">${kcSanitize(message.summary)?no_esc}</p>
-            <#if skipLink??>
-            <#else>
-                <#if client?? && client.baseUrl?has_content>
-                    <p><a id="backToApplication" class="mytheme-link" href="${client.baseUrl}">${kcSanitize(msg("backToApplication"))?no_esc}</a></p>
-                </#if>
+            <p class="gts-prose">${kcSanitize(message.summary)?no_esc}</p>
+            <#if !skipLink?? && client?? && client.baseUrl?has_content>
+                <div class="${properties.kcFormButtonsClass!}">
+                    <a id="backToApplication" href="${client.baseUrl}"
+                       class="${properties.kcButtonClass!} ${properties.kcButtonPrimaryClass!} ${properties.kcButtonBlockClass!} ${properties.kcButtonLargeClass!}">${kcSanitize(msg("backToApplication"))?no_esc}</a>
+                </div>
             </#if>
         </div>
     </#if>
