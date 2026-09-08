@@ -1,0 +1,15 @@
+# macOS
+.DS_Store
+._*
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+
+# Local agent/tool caches — machine-specific, not project code
+.codex/
+
+# Python bytecode from tools/
+__pycache__/
+*.py[cod]
