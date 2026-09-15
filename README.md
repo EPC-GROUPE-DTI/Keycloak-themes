@@ -74,17 +74,121 @@ Everything else the templates rely on (`password-commons.ftl`,
 `user-profile-commons.ftl`, `otpLogin.*`, `url.ssoLoginInOtherTabsUrl`,
 `menu-button-links.js`) exists in 26.0.x.
 
-## Install
+## Repository layout beyond the theme
 
-1. Copy the `themes` folder into `$KEYCLOAK_HOME/`, so the result is
-   `$KEYCLOAK_HOME/themes/gts-theme/login/...`.
-2. **Realm settings → Themes → Login theme → `gts-theme` → Save**.
-3. For `fr` / `es`, enable **Realm settings → Localization → Internationalization**
-   and pick the supported locales.
+```
+tools/
+├── deploy.sh              install on a server + restart (see below)
+└── sync-preview-i18n.py   copy message bundles into preview.html
+preview.html               offline preview of every page, no Keycloak needed
+```
 
-### How it is wired here
+## Deploying to a server
 
-`../KeycloakServer/docker-compose.yml` mounts this repo into the running server:
+For a native (non-Docker) Keycloak. Everything below is safe to re-run.
+
+### One-time setup on the server
+
+```bash
+# 1. Put a checkout somewhere outside the Keycloak install
+sudo git clone -b v2 <repo-url> /opt/gts-theme-src
+
+# 2. Point the script at your Keycloak, if it is not /opt/keycloak
+sudo nano /opt/gts-theme-src/tools/deploy.sh    # edit KC_HOME on line ~20
+```
+
+`KC_HOME` is the only value you normally set. The service user is read from the
+systemd unit automatically; override `KC_SERVICE` or `KC_USER` at the top only
+if your unit is not called `keycloak`. Find them with:
+
+```bash
+systemctl cat keycloak | grep -E 'ExecStart|User'
+```
+
+### Every deploy
+
+```bash
+cd /opt/gts-theme-src
+sudo git pull
+sudo tools/deploy.sh
+```
+
+The script installs the theme, fixes ownership and permissions, and restarts
+Keycloak. Pass `--no-restart` to stage it without restarting.
+
+**A restart is required.** In production mode Keycloak caches themes and
+`theme.properties`, so files copied into a running server are ignored until it
+restarts. It also ends active login sessions on a single node — time it
+accordingly.
+
+### Select the theme (once per realm)
+
+Not scriptable — do it in the admin console after the first deploy:
+
+1. **Realm settings → Themes → Login theme → `gts-theme` → Save**
+2. **Realm settings → Localization → Internationalization** on, locales
+   `en, fr, es` — without this the language switcher does not render.
+
+If `gts-theme` is missing from the dropdown, Keycloak did not find
+`login/theme.properties`; check the install path.
+
+### Verify
+
+```bash
+curl -s '<auth URL>' | grep -o '<link[^>]*stylesheet[^>]*>'
+```
+
+Expect **exactly one** stylesheet ending `login/gts-theme/css/styles.css`.
+
+- Several PatternFly files as well → the server is running an old copy that
+  predates `stylesCommon=` in `theme.properties`.
+- `login/keycloak/css/login.css` → the realm is still on the stock theme
+  (see "Select the theme").
+
+Then check every asset resolves. Take `<hash>` from the href above:
+
+```bash
+for f in css/styles.css js/script.js img/logo.svg img/gts.png img/favicon.svg \
+         fonts/plus-jakarta-sans-latin.woff2 fonts/plus-jakarta-sans-latin-ext.woff2; do
+  printf "%-46s " "$f"
+  curl -s -o /dev/null -w "%{http_code}\n" "https://<host>/resources/<hash>/login/gts-theme/$f"
+done
+```
+
+All seven must be `200`. Anything else means an incomplete copy — the most
+common failure, and what the script's manifest check exists to prevent.
+
+**Always hard-refresh** (Cmd/Ctrl+Shift+R or a private window). Keycloak serves
+`/resources/` with `Cache-Control: max-age=2592000`, and the version hash in the
+URL comes from the Keycloak version, not the theme — so it does not change when
+you update the theme and browsers will happily serve a month-old file.
+
+### Rollback
+
+Each deploy tars the previous install first:
+
+```bash
+ls $KC_HOME/themes/.gts-theme.backup-*.tar.gz
+sudo rm -rf $KC_HOME/themes/gts-theme
+sudo tar -xzf $KC_HOME/themes/.gts-theme.backup-<timestamp>.tar.gz -C $KC_HOME/themes/
+sudo systemctl restart keycloak
+```
+
+### Troubleshooting
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| Theme absent from the dropdown | wrong path, or no restart | `ls $KC_HOME/themes/gts-theme/login/theme.properties`, restart |
+| Page loads, no styling | realm still on the stock theme | select `gts-theme` in Realm settings |
+| `styles.css` → 404 | incomplete copy | re-run `deploy.sh`; it aborts rather than half-install |
+| `styles.css` → 403 | Keycloak user cannot read it | `sudo -u keycloak test -r <file>`, then `namei -l <file>` |
+| Design looks half-stock | `stylesCommon` inherited from the parent chain | ensure `stylesCommon=` is present in `theme.properties` |
+| Old CSS after deploying | browser cache, 30-day max-age | hard-refresh |
+| Fonts fall back to system | `resources/fonts/` not copied | re-run `deploy.sh` |
+
+## Working on the theme
+
+`../KeycloakServer/docker-compose.yml` mounts this repo into a local server:
 
 ```yaml
   keycloak:
@@ -92,20 +196,10 @@ Everything else the templates rely on (`password-commons.ftl`,
       - ../Keycloak-themes/themes/gts-theme:/opt/keycloak/themes/gts-theme:ro
 ```
 
-The `vertex` realm has `loginTheme=gts-theme`, internationalization on, and
-`en, fr, es` as supported locales. Because that service runs `start-dev`,
-Keycloak disables theme caching — edit a file here and reload the login page.
+That service runs `start-dev`, which disables theme caching — edit a file here
+and reload the login page, no restart needed.
 
-For a deployable image instead of a bind mount, copy `themes/gts-theme` into the
-`KeycloakServer` build context and add to the second stage of its Dockerfile:
-
-```dockerfile
-COPY themes/gts-theme /opt/keycloak/themes/gts-theme
-```
-
-## Working on the theme
-
-Start Keycloak with theme caching off so edits show up on reload:
+Or start any Keycloak with theme caching off so edits show up on reload:
 
 ```bash
 bin/kc.sh start-dev --spi-theme-cache-themes=false --spi-theme-cache-templates=false --spi-theme-static-max-age=-1
