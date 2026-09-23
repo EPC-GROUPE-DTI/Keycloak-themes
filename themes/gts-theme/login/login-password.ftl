@@ -7,13 +7,18 @@
         <form id="kc-form-login" class="${properties.kcFormClass!}" action="${url.loginAction}" method="post" data-pending-form novalidate>
             <@gts.passwordField id="password" name="password" label=msg("password")
                                 autocomplete="current-password" autofocus=true
-                                invalid=messagesPerField.existsError('password')
-                                linkHref=realm.resetPasswordAllowed?then(url.loginResetCredentialsUrl, '')
-                                linkLabel=msg("doForgotPassword")>
+                                required=true
+                                invalid=messagesPerField.existsError('password')>
                 <#if messagesPerField.existsError('password')>
                     <@gts.fieldError id="input-error-password" message=kcSanitize(messagesPerField.get('password')) />
                 </#if>
             </@gts.passwordField>
+
+            <#if realm.resetPasswordAllowed>
+                <div class="${properties.kcFormOptionsClass!}">
+                    <a class="gts-label-link" href="${url.loginResetCredentialsUrl}">${msg("doForgotPassword")}</a>
+                </div>
+            </#if>
 
             <div id="kc-form-buttons" class="${properties.kcFormButtonsClass!}">
                 <@gts.submitButton label=msg("doLogIn") pending=msg("pendingSignIn") />

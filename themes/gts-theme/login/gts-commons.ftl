@@ -5,16 +5,9 @@
 
 <#-- Password field: label (with optional inline link), reveal button, caps-lock notice.
      Nested content is rendered under the field — use it for the error message. -->
-<#macro passwordField id name label autocomplete="current-password" autofocus=false invalid=false linkHref="" linkLabel="">
+<#macro passwordField id name label autocomplete="current-password" autofocus=false invalid=false required=false>
     <div class="${properties.kcFormGroupClass!}<#if invalid> ${properties.kcFormGroupErrorClass!}</#if>">
-        <#if linkHref?has_content>
-            <div class="gts-label-row">
-                <label for="${id}" class="${properties.kcLabelClass!}">${label}</label>
-                <a class="gts-label-link" href="${linkHref}">${linkLabel}</a>
-            </div>
-        <#else>
-            <label for="${id}" class="${properties.kcLabelClass!}">${label}</label>
-        </#if>
+        <label for="${id}" class="${properties.kcLabelClass!}">${label}<#if required><span class="required">*</span></#if></label>
 
         <div class="${properties.kcInputGroup!}">
             <input type="password" id="${id}" name="${name}" class="${properties.kcInputClass!}"

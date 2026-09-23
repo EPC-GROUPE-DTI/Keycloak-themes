@@ -46,17 +46,44 @@
   --accent-700: #00725b;
   --accent-soft: #eafaf5;
 
-  /* CTA: deep fill + white label in light, bright fill + ink label in dark.
-     Both clear 4.5:1 — white on the mid teal did not (3.17:1). */
+  /* Brand accent for the CTA and the switch. #04c79a is light enough that a
+     white label is 2.18:1, so the label is ink — 7.87:1. */
+  --accent-brand: #04c79a;
+
+  /* Large button geometry, from the Figma tokens:
+     padding-up-large 16px, padding-side-large 16px, spacing-large 8px. */
+  --btn-pad-y: 1rem;
+  --btn-pad-x: 1rem;
+  --btn-gap: 0.5rem;
+  /* Button state scale (design hand-off). Label is white in every state, per
+     the brand spec. Contrast against white:
+       default  #00A47F  3.17:1   (below AA 4.5 — accepted by design)
+       hover    #008668  4.56:1
+       pressed  #00654E  7.07:1
+       inactive #A0EBDA  1.36:1   (disabled controls are exempt from AA) */
   --btn-bg: #00a47f;
-  --btn-bg-hover: #008e6d;
+  --btn-bg-hover: #008668;
+  --btn-bg-active: #00654e;
+  --btn-bg-disabled: #a0ebda;
   --btn-fg: #ffffff;
+  --btn-fg-hover: #ffffff;
+  --btn-fg-disabled: #ffffff;
+  --btn-radius: 4px;
+
+  /* Text fields, matched to the button hand-off */
+  --field-pad-y: 1rem;
+  --field-pad-x: 1rem;
+  --field-radius: var(--btn-radius);
+  --field-line: #6c1d45;      /* brand field stroke, from the mockup */
+  --field-line-width: 2px;
+  --label-color: #121212;
+  --required-color: #df2a2a;
 
   /* Surfaces */
   --canvas: #05231e;
   --surface: #ffffff;
   --surface-sunken: rgb(255 255 255 / 0.55);
-  --field-bg: rgb(255 255 255 / 0.8);
+  --field-bg: #fdfdfd;
   --field-autofill: #f2f7f6;
 
   /* Glass */
@@ -138,9 +165,14 @@
     --accent-600: #16d6a6;
     --accent-700: #2ae3b4;
     --accent-soft: #0d2620;
+    --accent-brand: #04c79a;
     --btn-bg: #00a47f;
-    --btn-bg-hover: #008e6d;
-    --btn-fg: #04231d;
+    --btn-bg-hover: #008668;
+    --btn-bg-active: #00654e;
+    --btn-bg-disabled: #a0ebda;
+    --btn-fg: #ffffff;
+    --btn-fg-hover: #ffffff;
+    --btn-fg-disabled: #ffffff;
 
     --danger: #ff9a92;
     --danger-bg: #2a1614;
@@ -184,9 +216,14 @@
   --accent-600: #16d6a6;
   --accent-700: #2ae3b4;
   --accent-soft: #0d2620;
+  --accent-brand: #04c79a;
   --btn-bg: #00a47f;
-  --btn-bg-hover: #008e6d;
-  --btn-fg: #04231d;
+  --btn-bg-hover: #008668;
+  --btn-bg-active: #00654e;
+  --btn-bg-disabled: #a0ebda;
+  --btn-fg: #ffffff;
+  --btn-fg-hover: #ffffff;
+  --btn-fg-disabled: #ffffff;
   --danger: #ff9a92;
   --danger-bg: #2a1614;
   --danger-line: #4d2622;
@@ -277,10 +314,14 @@ a:hover {
   z-index: -1;
   inset: 0;
   overflow: hidden;
+  /* Every stop is derived from the brand value #04c79a. The ramp peaks at the
+     brand colour and steps back down toward the lower right, so the wordmark,
+     the strapline and the blast scene keep a dark ground to sit on — white on
+     #04c79a itself is only 2.18:1. */
   background:
-    radial-gradient(120% 95% at 84% 2%, rgb(0 232 183 / 0.5), transparent 56%),
+    radial-gradient(120% 95% at 84% 2%, rgb(4 199 154 / 0.62), transparent 58%),
     radial-gradient(95% 85% at 4% 96%, rgb(1 22 18 / 0.92), transparent 62%),
-    linear-gradient(150deg, #04201b 0%, #064035 36%, #016c58 72%, #00a684 100%);
+    linear-gradient(150deg, #021c16 0%, #03402f 34%, #04c79a 74%, #05815f 100%);
 }
 
 .gts-bg span {
@@ -295,7 +336,7 @@ a:hover {
   left: -12%;
   width: 58vw;
   height: 58vw;
-  background: rgb(0 236 187 / 0.5);
+  background: rgb(4 199 154 / 0.58);
   animation: gts-drift-a 38s ease-in-out infinite alternate;
 }
 
@@ -304,7 +345,7 @@ a:hover {
   bottom: -26%;
   width: 66vw;
   height: 66vw;
-  background: rgb(0 92 78 / 0.7);
+  background: rgb(2 62 48 / 0.72);
   animation: gts-drift-b 46s ease-in-out infinite alternate;
 }
 
@@ -313,7 +354,7 @@ a:hover {
   left: 46%;
   width: 34vw;
   height: 34vw;
-  background: rgb(150 255 232 / 0.22);
+  background: rgb(120 240 210 / 0.24);
   animation: gts-drift-c 34s ease-in-out infinite alternate;
 }
 
@@ -861,11 +902,13 @@ a:hover {
 
 .gts-label {
   display: block;
-  margin: 0 0 0.4375rem;
-  font-size: 0.8125rem;
-  font-weight: 600;
+  margin: 0 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.4;
   letter-spacing: 0;
-  color: var(--ink-soft);
+  text-align: center;
+  color: var(--label-color);
 }
 
 .gts-label-row .gts-label {
@@ -873,8 +916,8 @@ a:hover {
 }
 
 .gts-label .required {
-  margin-left: 0.125rem;
-  color: var(--danger);
+  margin-left: 0.1875rem;
+  color: var(--required-color);
 }
 
 .gts-label-link {
@@ -888,19 +931,19 @@ a:hover {
 }
 
 .gts-input,
-.gts-field select,
-.gts-field textarea,
-.gts-field input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]) {
+:where(.gts-field) :where(select),
+:where(.gts-field) :where(textarea),
+:where(.gts-field) :where(input:not([type="checkbox"]):not([type="radio"]):not([type="submit"])) {
   width: 100%;
   max-width: 100%;
   min-height: 3rem;
-  padding: 0.6875rem 0.875rem;
+  padding: var(--field-pad-y) var(--field-pad-x);
   font: inherit;
   font-size: 1rem; /* 16px keeps iOS from zooming on focus */
   color: var(--ink);
   background: var(--field-bg);
-  border: 1px solid var(--line-strong);
-  border-radius: var(--r-sm);
+  border: var(--field-line-width) solid var(--field-line);
+  border-radius: var(--field-radius);
   box-shadow: var(--field-inset);
   transition: border-color var(--fast) var(--ease), box-shadow var(--fast) var(--ease),
     background var(--fast) var(--ease);
@@ -917,7 +960,7 @@ a:hover {
 }
 
 .gts-input:hover {
-  border-color: var(--ink-muted);
+  border-color: var(--field-line);
 }
 
 .gts-input:focus,
@@ -1090,8 +1133,8 @@ a:hover {
 }
 
 .gts-check input[type="checkbox"]:checked {
-  background: var(--brand-600) var(--icon-check) center / 0.75rem no-repeat;
-  border-color: var(--brand-600);
+  background: var(--accent-brand) var(--icon-check) center / 0.75rem no-repeat;
+  border-color: var(--accent-brand);
 }
 
 .gts-check input[type="checkbox"]:focus-visible {
@@ -1102,7 +1145,7 @@ a:hover {
 /* native checkbox/radio on pages Keycloak renders from the base theme */
 .gts-checkbox-input,
 .gts-radio-input {
-  accent-color: var(--brand-600);
+  accent-color: var(--accent-brand);
   width: 1.125rem;
   height: 1.125rem;
   margin-right: 0.5rem;
@@ -1137,17 +1180,17 @@ a:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: var(--btn-gap);
   width: 100%;
   min-height: 3rem;
-  padding: 0.75rem 1.25rem;
+  padding: var(--btn-pad-y) var(--btn-pad-x);
   font: inherit;
   font-size: 0.9375rem;
   font-weight: 600;
   letter-spacing: 0;
   text-decoration: none;
   border: 1px solid transparent;
-  border-radius: var(--r-md);
+  border-radius: var(--btn-radius);
   cursor: pointer;
   transition: transform var(--fast) var(--ease), box-shadow var(--fast) var(--ease),
     background var(--fast) var(--ease), border-color var(--fast) var(--ease);
@@ -1164,13 +1207,23 @@ a:hover {
 }
 
 .gts-btn-primary:hover {
+  color: var(--btn-fg-hover);
   background: var(--btn-bg-hover);
   transform: none;
 }
 
 .gts-btn-primary:active {
+  color: var(--btn-fg-hover);
+  background: var(--btn-bg-active);
   transform: none;
   box-shadow: none;
+}
+
+/* Inactive. Excludes the submitting state, which keeps the live fill and its
+   shimmer — script.js sets disabled while a form is in flight. */
+.gts-btn-primary:disabled:not([data-pending="true"]) {
+  color: var(--btn-fg-disabled);
+  background: var(--btn-bg-disabled);
 }
 
 .gts-btn-ghost {
@@ -1181,7 +1234,7 @@ a:hover {
 
 a.gts-btn-primary:hover,
 a.gts-btn-primary:focus-visible {
-  color: var(--btn-fg);
+  color: var(--btn-fg-hover);
 }
 
 .gts-btn-ghost:hover {
@@ -1554,7 +1607,7 @@ a.gts-btn-primary:focus-visible {
   --icon-alert: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 7.5v5'/%3E%3Cpath d='M12 16.2h.01'/%3E%3C/svg%3E");
   --icon-info: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M12 11v5.5'/%3E%3Cpath d='M12 7.8h.01'/%3E%3C/svg%3E");
   --icon-check-circle: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='m8.2 12.3 2.6 2.6 5-5.2'/%3E%3C/svg%3E");
-  --icon-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7'/%3E%3C/svg%3E");
+  --icon-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230b1f1a' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7'/%3E%3C/svg%3E");
   --icon-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m9 5 7 7-7 7'/%3E%3C/svg%3E");
   --icon-globe: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Cpath d='M3.5 9h17M3.5 15h17'/%3E%3Cpath d='M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18Z'/%3E%3C/svg%3E");
 }
