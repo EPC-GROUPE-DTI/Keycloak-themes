@@ -149,13 +149,13 @@ Then check every asset resolves. Take `<hash>` from the href above:
 
 ```bash
 for f in css/styles.css js/script.js img/logo.svg img/gts.png img/favicon.svg \
-         fonts/geist-variable.woff2; do
+         fonts/roboto-latin.woff2 img/hero/laptop.webp; do
   printf "%-46s " "$f"
   curl -s -o /dev/null -w "%{http_code}\n" "https://<host>/resources/<hash>/login/gts-theme/$f"
 done
 ```
 
-All six must be `200`. Anything else means an incomplete copy — the most
+All seven must be `200`. Anything else means an incomplete copy — the most
 common failure, and what the script's manifest check exists to prevent.
 
 **Always hard-refresh** (Cmd/Ctrl+Shift+R or a private window). Keycloak serves

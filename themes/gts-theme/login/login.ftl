@@ -1,6 +1,6 @@
 <#import "template.ftl" as layout>
 <#import "gts-commons.ftl" as gts>
-<@layout.registrationLayout displayMessage=!messagesPerField.existsError('username','password') subtitle=msg("loginAccountSubtitle"); section>
+<@layout.registrationLayout bodyClass="gts-page-login" displayMessage=!messagesPerField.existsError('username','password') subtitle=msg("loginAccountSubtitle"); section>
     <#if section = "header">
         ${msg("loginAccountTitle")}
     <#elseif section = "form">
@@ -8,8 +8,10 @@
             <form id="kc-form-login" class="${properties.kcFormClass!}" action="${url.loginAction}" method="post" data-pending-form novalidate>
                 <#if !usernameHidden??>
                     <div class="${properties.kcFormGroupClass!}<#if messagesPerField.existsError('username','password')> ${properties.kcFormGroupErrorClass!}</#if>">
-                        <label for="username" class="${properties.kcLabelClass!}"><#if !realm.loginWithEmailAllowed>${msg("username")}<#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}<#else>${msg("email")}</#if><span class="required">*</span></label>
+                        <#assign usernameLabel><#if !realm.loginWithEmailAllowed>${msg("username")}<#elseif !realm.registrationEmailAsUsername>${msg("usernameOrEmail")}<#else>${msg("email")}</#if></#assign>
+                        <label for="username" class="${properties.kcLabelClass!}">${usernameLabel}<span class="required">*</span></label>
                         <input tabindex="1" id="username" name="username" type="text" class="${properties.kcInputClass!}"
+                               placeholder="${usernameLabel}"
                                value="${(login.username!'')}" autofocus dir="ltr"
                                autocomplete="username"
                                autocapitalize="none" autocorrect="off" spellcheck="false"
@@ -20,6 +22,7 @@
                 </#if>
 
                 <@gts.passwordField id="password" name="password" label=msg("password")
+                                    placeholder=msg("password")
                                     autocomplete="current-password"
                                     required=true
                                     invalid=messagesPerField.existsError('username','password')>

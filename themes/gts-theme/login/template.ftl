@@ -63,82 +63,43 @@
 
 <body class="${properties.kcBodyClass!}<#if bodyClass?has_content> ${bodyClass}</#if>">
 <div class="${properties.kcLoginClass!}">
-    <#-- atmosphere: brand gradient, slow drifting light, grain -->
-    <div class="gts-bg" aria-hidden="true"><span></span><span></span><span></span></div>
-
     <div class="gts-stage">
-        <div class="gts-brand-col">
-                <svg class="gts-glass-art" viewBox="0 0 620 460" aria-hidden="true" focusable="false">
-                  <defs>
-                    <clipPath id="gts-rock-clip"><path d="M0 150H200V206H360V262H520V318H620V460H0Z"/></clipPath>
-                  </defs>
-                  <#-- the bench being worked -->
-                  <path class="gts-rock" d="M0 150H200V206H360V262H520V318H620V460H0Z"/>
-                  <path class="gts-bench" d="M0 150H200V206H360V262H520V318H620"/>
-                  <#-- 1. drilling — the rig tracks the row and each hole appears behind it -->
-                  <g class="gts-rig"><path d="M0 122V150" /><path d="M-7 150H7L0 162Z" /></g>
-                  <g class="gts-holes">
-                    <line class="gts-hole gts-hole--1" x1="40" y1="150" x2="40" y2="188" pathLength="1"/>
-                    <line class="gts-hole gts-hole--2" x1="76" y1="150" x2="76" y2="188" pathLength="1"/>
-                    <line class="gts-hole gts-hole--3" x1="112" y1="150" x2="112" y2="188" pathLength="1"/>
-                    <line class="gts-hole gts-hole--4" x1="148" y1="150" x2="148" y2="188" pathLength="1"/>
-                    <line class="gts-hole gts-hole--5" x1="184" y1="150" x2="184" y2="188" pathLength="1"/>
-                  </g>
-                  <#-- 2. loading — each hole charges from the toe up -->
-                  <g class="gts-charges">
-                    <line class="gts-charge gts-charge--1" x1="40" y1="188" x2="40" y2="158" pathLength="1"/>
-                    <line class="gts-charge gts-charge--2" x1="76" y1="188" x2="76" y2="158" pathLength="1"/>
-                    <line class="gts-charge gts-charge--3" x1="112" y1="188" x2="112" y2="158" pathLength="1"/>
-                    <line class="gts-charge gts-charge--4" x1="148" y1="188" x2="148" y2="158" pathLength="1"/>
-                    <line class="gts-charge gts-charge--5" x1="184" y1="188" x2="184" y2="158" pathLength="1"/>
-                  </g>
-                  <#-- 3. firing — collars flash on the delay sequence -->
-                  <g class="gts-fires">
-                    <circle class="gts-fire gts-fire--1" cx="40" cy="150" r="8"/>
-                    <circle class="gts-fire gts-fire--2" cx="76" cy="150" r="8"/>
-                    <circle class="gts-fire gts-fire--3" cx="112" cy="150" r="8"/>
-                    <circle class="gts-fire gts-fire--4" cx="148" cy="150" r="8"/>
-                    <circle class="gts-fire gts-fire--5" cx="184" cy="150" r="8"/>
-                  </g>
-                  <#-- 4. the wavefront, travelling through rock -->
-                  <g clip-path="url(#gts-rock-clip)">
-                    <circle class="gts-wave gts-wave--1" cx="112" cy="168" r="140"/>
-                    <circle class="gts-wave gts-wave--2" cx="112" cy="168" r="140"/>
-                    <circle class="gts-wave gts-wave--3" cx="112" cy="168" r="140"/>
-                  </g>
-                  <#-- 5. monitors on the benches trip in order of distance -->
-                  <g class="gts-sensors">
-                    <line class="gts-mast" x1="300" y1="206" x2="300" y2="186"/>
-                    <circle class="gts-ping gts-ping--1" cx="300" cy="184" r="10"/>
-                    <circle class="gts-sensor gts-sensor--1" cx="300" cy="184" r="4.5"/>
-                    <line class="gts-mast" x1="430" y1="262" x2="430" y2="242"/>
-                    <circle class="gts-ping gts-ping--2" cx="430" cy="240" r="10"/>
-                    <circle class="gts-sensor gts-sensor--2" cx="430" cy="240" r="4.5"/>
-                    <line class="gts-mast" x1="560" y1="318" x2="560" y2="298"/>
-                    <circle class="gts-ping gts-ping--3" cx="560" cy="296" r="10"/>
-                    <circle class="gts-sensor gts-sensor--3" cx="560" cy="296" r="4.5"/>
-                  </g>
-                  <#-- 6. the record, always running -->
-                  <g class="gts-tape">
-                    <line class="gts-baseline" x1="0" y1="404" x2="620" y2="404"/>
-                    <g class="gts-scroll">
-                      <path class="gts-trace" transform="translate(0 404)" d="M0 -0.2 L10 0.2 L20 1.7 L30 -0.1 L40 0.0 L50 0.3 L60 -1.3 L70 0.0 L80 0.5 L90 1.2 L100 -1.6 L110 -0.8 L120 -1.6 L130 1.2 L140 0.8 L150 -1.8 L160 1.9 L170 1.9 L180 0.6 L190 0.5 L200 -1.4 L210 -1.9 L220 0.1 L230 -1.8 L240 -1.2 L250 17.1 L260 -12.1 L270 13.4 L280 -10.9 L290 11.2 L300 -7.8 L310 6.9 L320 -5.2 L330 4.7 L340 -3.5 L350 2.6 L360 -3.1 L370 2.6 L380 -2.0 L390 1.5 L400 -1.0 L410 -1.1 L420 -0.8 L430 -1.7 L440 1.1 L450 -0.4 L460 1.4 L470 -0.5 L480 1.8 L490 1.4 L500 -2.0 L510 -1.2 L520 1.6 L530 -0.1 L540 1.9 L550 -0.4 L560 -1.7 L570 0.5 L580 1.1 L590 -0.9 L600 -1.7 L610 -0.7 L620 1.9"/>
-                      <path class="gts-trace" transform="translate(620 404)" d="M0 -0.2 L10 0.2 L20 1.7 L30 -0.1 L40 0.0 L50 0.3 L60 -1.3 L70 0.0 L80 0.5 L90 1.2 L100 -1.6 L110 -0.8 L120 -1.6 L130 1.2 L140 0.8 L150 -1.8 L160 1.9 L170 1.9 L180 0.6 L190 0.5 L200 -1.4 L210 -1.9 L220 0.1 L230 -1.8 L240 -1.2 L250 17.1 L260 -12.1 L270 13.4 L280 -10.9 L290 11.2 L300 -7.8 L310 6.9 L320 -5.2 L330 4.7 L340 -3.5 L350 2.6 L360 -3.1 L370 2.6 L380 -2.0 L390 1.5 L400 -1.0 L410 -1.1 L420 -0.8 L430 -1.7 L440 1.1 L450 -0.4 L460 1.4 L470 -0.5 L480 1.8 L490 1.4 L500 -2.0 L510 -1.2 L520 1.6 L530 -0.1 L540 1.9 L550 -0.4 L560 -1.7 L570 0.5 L580 1.1 L590 -0.9 L600 -1.7 L610 -0.7 L620 1.9"/>
+        <#-- Desktop illustration, from the Explore 2 "Connexion" mockup (Figma 1937:281784).
+             Coordinates are the mockup's own; the viewBox scales the whole scene and the
+             clip keeps it inside the frame, as in the design. Hidden below 60rem. -->
+        <div class="gts-brand-col" aria-hidden="true">
+            <svg class="gts-hero" viewBox="0 0 622.294 359.902" preserveAspectRatio="xMidYMid meet" focusable="false">
+                <defs><clipPath id="gts-hero-clip"><rect width="622.294" height="359.902"/></clipPath></defs>
+                <g clip-path="url(#gts-hero-clip)">
+                    <image href="${url.resourcesPath}/img/hero/green-shape.svg" x="116.24" y="37.457" width="400.871" height="248.689"/>
+                    <g transform="translate(278.548 349.396) rotate(-135)">
+                        <svg x="-221.646" y="-229.08" width="443.291" height="458.16">
+                            <image href="${url.resourcesPath}/img/hero/rock-bottom.webp" x="0" y="-7.88" width="443.291" height="443.27" preserveAspectRatio="none"/>
+                        </svg>
                     </g>
-                  </g>
-                </svg>
-            <div id="kc-header" class="${properties.kcHeaderClass!}">
-                <div id="kc-header-wrapper" class="${properties.kcHeaderWrapperClass!}">
-                    <img class="gts-logo" src="${url.resourcesPath}/img/logo.svg" alt="${brandName}"
-                         width="331" height="71" onerror="this.style.display='none'" />
-                </div>
-            </div>
-            <p class="gts-aside-line">${msg("brandTagline")}</p>
-            <p class="gts-aside-note">${msg("brandNote")}</p>
+                    <g transform="translate(435.676 -77.689) rotate(-174.35)">
+                        <svg x="-206.991" y="-211.159" width="413.981" height="422.317">
+                            <image href="${url.resourcesPath}/img/hero/rock-top.webp" x="0" y="2.069" width="413.981" height="414.0" preserveAspectRatio="none"/>
+                        </svg>
+                    </g>
+                    <image href="${url.resourcesPath}/img/hero/gts.svg" x="463.269" y="264.768" width="50.593" height="13.183"/>
+                    <image href="${url.resourcesPath}/img/hero/laptop-shadow.svg" x="96.93" y="177.41" width="334.162" height="162.788"/>
+                    <image href="${url.resourcesPath}/img/hero/laptop.webp" x="154.367" y="62.395" width="325.169" height="224.189" preserveAspectRatio="xMidYMid slice"/>
+                    <svg x="379.537" y="106.215" width="76.611" height="110.792">
+                        <image href="${url.resourcesPath}/img/hero/phone.webp" x="0" y="-0.022" width="78.235" height="110.836" preserveAspectRatio="none"/>
+                    </svg>
+                </g>
+            </svg>
         </div>
 
         <main class="${properties.kcFormCardClass!}">
             <div class="gts-card-inner">
+                <div id="kc-header" class="${properties.kcHeaderClass!}">
+                    <div id="kc-header-wrapper" class="${properties.kcHeaderWrapperClass!}">
+                        <img class="gts-logo" src="${url.resourcesPath}/img/logo.svg" alt="${brandName}"
+                             width="331" height="71" />
+                    </div>
+                </div>
 
                 <#if realm.internationalizationEnabled && locale.supported?size gt 1>
                     <div class="${properties.kcLocaleMainClass!}" id="kc-locale">

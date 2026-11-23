@@ -33,7 +33,8 @@ REQUIRED=(
   "login/resources/js/script.js"
   "login/resources/img/logo.svg"
   "login/resources/img/favicon.svg"
-  "login/resources/fonts/geist-variable.woff2"
+  "login/resources/fonts/roboto-latin.woff2"
+  "login/resources/img/hero/laptop.webp"
   "login/messages/messages_en.properties"
 )
 

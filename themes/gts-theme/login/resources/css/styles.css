@@ -5,15 +5,25 @@
    ============================================================================= */
 
 /* -----------------------------------------------------------------------------
-   0. Type — Geist, self-hosted (OFL, see ../fonts/OFL.txt).
-   One variable file covers every weight and Latin + Latin Extended.
+   0. Type — Roboto (the Explore 2 design font), self-hosted variable weight
+   (OFL, see ../fonts/OFL.txt). latin-ext only downloads when a page uses it.
    -------------------------------------------------------------------------- */
 @font-face {
-  font-family: "Geist";
+  font-family: "Roboto";
   font-style: normal;
   font-weight: 100 900;
   font-display: swap;
-  src: url("../fonts/geist-variable.woff2") format("woff2");
+  src: url("../fonts/roboto-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("../fonts/roboto-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 
 /* -----------------------------------------------------------------------------
@@ -41,9 +51,10 @@
 
   /* Large button geometry, from the Figma tokens:
      padding-up-large 16px, padding-side-large 16px, spacing-large 8px. */
+  /* Explore 2 "Buttons" component, small size: padding 8px, radius 4px */
   --btn-pad-y: 0.5rem;
-  --btn-pad-x: 1rem;
-  --control-h: 2.5rem; /* 40px — fields and buttons share one height */
+  --btn-pad-x: 0.5rem;
+  --control-h: 2.375rem; /* 38px — the design's field height */
   --btn-gap: 0.5rem;
   /* Button state scale (design hand-off). Label is white in every state, per
      the brand spec. Contrast against white:
@@ -55,23 +66,36 @@
   --btn-bg-hover: #008668;
   --btn-bg-active: #00654e;
   --btn-bg-disabled: #a0ebda;
-  --btn-fg: #ffffff;
-  --btn-fg-hover: #ffffff;
-  --btn-fg-disabled: #ffffff;
-  --btn-radius: 8px;
+  --btn-fg: #fdfdfd;
+  --btn-fg-hover: #fdfdfd;
+  --btn-fg-disabled: #fdfdfd;
+  --btn-radius: 4px;
 
-  /* Text fields, matched to the button: 40px high, 8px radius, hairline */
+  /* Explore 2 text field: 38px, 2px amarante stroke (4px on focus), radius 4px */
   --field-pad-y: 0.5rem;
-  --field-pad-x: 0.75rem;
-  --field-radius: var(--btn-radius);
-  --field-line: #d9dcdb;
-  --field-line-hover: #b8bdbb;
-  --field-line-width: 1px;
-  --label-color: #1a1a1a;
+  --field-pad-x: 1rem;
+  --field-radius: 4px;
+  --field-line: #6c1d45;
+  --field-line-hover: #6c1d45;
+  --field-line-disabled: #b87698;
+  --field-line-width: 2px;
+  --field-placeholder: #acadaf;
+  --label-color: #121212;
   --required-color: #df2a2a;
+  --required-disabled: #f0a8a8;
+
+  /* Checkbox (mintgreen) */
+  --check-line: #00c79a;
+  --check-hover: #a0ebda;
+  --check-disabled: #c7f3e9;
+
+  /* Links (moonstone) */
+  --link: #317e84;
+  --link-hover-bg: #dceff1;
 
   /* Surfaces */
-  --canvas: #05231e;
+  --canvas: #ffffff;
+  --card: #f1f1f1;
   --surface: #ffffff;
   --surface-sunken: rgb(255 255 255 / 0.55);
   --field-bg: #fdfdfd;
@@ -84,7 +108,7 @@
   --glass-sheen: rgb(255 255 255 / 0.75);
 
   /* Ink */
-  --ink: #0b1f1a;
+  --ink: #121212;
   --ink-soft: #40544e;
   --ink-muted: #56665f;
 
@@ -115,7 +139,7 @@
   --field-inset: inset 0 1px 2px rgb(11 31 26 / 0.05);
 
   /* Type */
-  --font: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI",
+  --font: "Roboto", -apple-system, BlinkMacSystemFont, "Segoe UI",
     Roboto, "Helvetica Neue", Arial, sans-serif;
 
   /* Geometry */
@@ -293,11 +317,12 @@ a:hover {
 }
 
 /* -----------------------------------------------------------------------------
-   3. Stage — mobile bottom sheet, desktop split-screen
+   3. Page — Explore 2 "Connexion" mockup (Figma 1936:279946)
+   Mobile: the card alone, 24px from the edges, centred.
+   Desktop (60rem+): illustration on the left, card column on the right.
    -------------------------------------------------------------------------- */
 .gts-login {
   position: relative;
-  isolation: isolate;
   display: grid;
   min-height: 100vh;
   min-height: 100dvh;
@@ -305,412 +330,55 @@ a:hover {
   background: var(--canvas);
 }
 
-/* the atmosphere: brand gradient + subtle texture */
-.gts-bg {
-  position: fixed;
-  z-index: -1;
-  inset: 0;
-  overflow: hidden;
-  /* Every stop is derived from the brand value #04c79a. The ramp peaks at the
-     brand colour and steps back down toward the lower right, so the wordmark,
-     the strapline and the blast scene keep a dark ground to sit on — white on
-     #04c79a itself is only 2.18:1. */
-  background:
-    radial-gradient(120% 95% at 84% 2%, rgb(4 199 154 / 0.62), transparent 58%),
-    radial-gradient(95% 85% at 4% 96%, rgb(1 22 18 / 0.92), transparent 62%),
-    linear-gradient(150deg, #021c16 0%, #03402f 34%, #04c79a 74%, #05815f 100%);
-}
-
-.gts-bg span {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(64px);
-  will-change: transform;
-}
-
-.gts-bg span:nth-child(1) {
-  top: -18%;
-  left: -12%;
-  width: 58vw;
-  height: 58vw;
-  background: rgb(4 199 154 / 0.58);
-  animation: gts-drift-a 38s ease-in-out infinite alternate;
-}
-
-.gts-bg span:nth-child(2) {
-  right: -20%;
-  bottom: -26%;
-  width: 66vw;
-  height: 66vw;
-  background: rgb(2 62 48 / 0.72);
-  animation: gts-drift-b 46s ease-in-out infinite alternate;
-}
-
-.gts-bg span:nth-child(3) {
-  top: 32%;
-  left: 46%;
-  width: 34vw;
-  height: 34vw;
-  background: rgb(120 240 210 / 0.24);
-  animation: gts-drift-c 34s ease-in-out infinite alternate;
-}
-
-/* grain keeps the gradient from banding and reads as texture, not noise */
-.gts-bg::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  opacity: 0.32;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
-}
-
-@keyframes gts-drift-a {
-  to { transform: translate3d(14%, 18%, 0) scale(1.18); }
-}
-@keyframes gts-drift-b {
-  to { transform: translate3d(-16%, -12%, 0) scale(1.12); }
-}
-@keyframes gts-drift-c {
-  to { transform: translate3d(-22%, 16%, 0) scale(0.86); }
-}
-
 .gts-stage {
   display: grid;
-  grid-template-rows: minmax(7.5rem, 1fr) auto;
-  align-items: end;
-  gap: 0;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: center;
   width: 100%;
   min-height: 100vh;
   min-height: 100dvh;
 }
 
 /* -----------------------------------------------------------------------------
-   4. Brand side
+   4. Illustration (desktop only)
    -------------------------------------------------------------------------- */
 .gts-brand-col {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.75rem;
-  align-self: stretch;
-  padding: max(1rem, env(safe-area-inset-top)) 1.25rem 1.5rem;
-  overflow: hidden;
-  color: #fff;
-  text-align: center;
+  display: none;
 }
 
-.gts-brand-col::before,
-.gts-brand-col::after {
-  content: "";
-  position: absolute;
-  pointer-events: none;
-}
-
-.gts-brand-col::before {
-  inset: 0;
-  opacity: 0.09;
-  background-image:
-    linear-gradient(115deg, rgb(255 255 255 / 0.18) 1px, transparent 1px),
-    linear-gradient(180deg, rgb(255 255 255 / 0.12), transparent 45%);
-  background-size: 32px 32px, 100% 100%;
-  mask-image: linear-gradient(180deg, rgb(0 0 0 / 0.7), transparent 88%);
-}
-
-.gts-brand-col::after {
-  right: -4.5rem;
-  bottom: -5rem;
-  width: min(16rem, 54vw);
-  aspect-ratio: 1;
-  opacity: 0.54;
-  border: 1px solid rgb(255 255 255 / 0.16);
-  border-radius: 28%;
-  transform: rotate(18deg);
-  box-shadow:
-    inset 0 0 0 1.5rem rgb(255 255 255 / 0.03),
-    inset 0 0 0 3rem rgb(0 199 154 / 0.045);
-}
-
-.gts-glass-art {
-  position: absolute;
-  z-index: 0;
-  right: -1.5rem;
-  bottom: -1rem;
-  width: min(26rem, 96%);
-  height: auto;
-  opacity: 0.6;
-  overflow: visible;
-  pointer-events: none;
-}
-
-/* -----------------------------------------------------------------------------
-   The blast cycle, on one 14s loop: drill the row, load the holes, fire on the
-   delay, the front travels through rock, the monitors trip in order of
-   distance, and the trace runs underneath the whole time.
-   Every timing below is a share of that single 14s period.
-   -------------------------------------------------------------------------- */
-.gts-rock {
-  fill: #fff;
-  fill-opacity: 0.06;
-}
-
-.gts-bench {
-  fill: none;
-  stroke: #fff;
-  stroke-opacity: 0.42;
-  stroke-width: 2.5;
-  stroke-linejoin: round;
-}
-
-/* 1. drilling */
-.gts-rig {
-  fill: rgb(255 255 255 / 0.7);
-  stroke: rgb(255 255 255 / 0.7);
-  stroke-width: 2;
-  stroke-linecap: round;
-  animation: gts-rig 14s linear infinite;
-}
-
-@keyframes gts-rig {
-  0%, 3%   { opacity: 0; transform: translateX(30px); }
-  6%       { opacity: 0.9; }
-  25%      { opacity: 0.9; transform: translateX(196px); }
-  30%, 100% { opacity: 0; transform: translateX(196px); }
-}
-
-.gts-hole {
-  stroke: rgb(255 255 255 / 0.5);
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: gts-drill 14s linear infinite both;
-}
-
-.gts-hole--1 { animation-delay: 0.7s; }
-.gts-hole--2 { animation-delay: 1.26s; }
-.gts-hole--3 { animation-delay: 1.82s; }
-.gts-hole--4 { animation-delay: 2.38s; }
-.gts-hole--5 { animation-delay: 2.94s; }
-
-@keyframes gts-drill {
-  0%   { stroke-dashoffset: 1; }
-  5%   { stroke-dashoffset: 0; }
-  58%  { stroke-dashoffset: 0; opacity: 1; }
-  66%  { opacity: 0; }
-  100% { stroke-dashoffset: 0; opacity: 0; }
-}
-
-/* 2. loading */
-.gts-charge {
-  stroke: rgb(140 255 224 / 0.95);
-  stroke-width: 4;
-  stroke-linecap: round;
-  stroke-dasharray: 1;
-  stroke-dashoffset: 1;
-  animation: gts-load 14s linear infinite both;
-}
-
-.gts-charge--1 { animation-delay: 3.9s; }
-.gts-charge--2 { animation-delay: 4.12s; }
-.gts-charge--3 { animation-delay: 4.34s; }
-.gts-charge--4 { animation-delay: 4.56s; }
-.gts-charge--5 { animation-delay: 4.78s; }
-
-@keyframes gts-load {
-  0%   { stroke-dashoffset: 1; }
-  7%   { stroke-dashoffset: 0; }
-  38%  { stroke-dashoffset: 0; opacity: 1; }
-  42%  { opacity: 0; }
-  100% { stroke-dashoffset: 0; opacity: 0; }
-}
-
-/* 3. firing, on the delay sequence */
-.gts-fire {
-  fill: #fff;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: gts-fire 14s linear infinite both;
-}
-
-.gts-fire--1 { animation-delay: 5.6s; }
-.gts-fire--2 { animation-delay: 5.71s; }
-.gts-fire--3 { animation-delay: 5.82s; }
-.gts-fire--4 { animation-delay: 5.93s; }
-.gts-fire--5 { animation-delay: 6.04s; }
-
-@keyframes gts-fire {
-  0%   { opacity: 0; transform: scale(0.2); }
-  1.5% { opacity: 1; transform: scale(1); }
-  5%   { opacity: 0; transform: scale(2.6); }
-  100% { opacity: 0; transform: scale(0.2); }
-}
-
-/* 4. the wavefront — clipped to the rock, linear so its speed is constant */
-.gts-wave {
-  fill: none;
-  stroke: #fff;
-  stroke-width: 2.5;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: gts-wave 14s linear infinite both;
-}
-
-.gts-wave--1 { animation-delay: 5.6s; }
-.gts-wave--2 { animation-delay: 5.85s; }
-.gts-wave--3 { animation-delay: 6.1s; }
-
-@keyframes gts-wave {
-  0%    { opacity: 0; transform: scale(0.04); }
-  1%    { opacity: 0.5; }
-  11%   { opacity: 0; transform: scale(3.5); }
-  100%  { opacity: 0; transform: scale(0.04); }
-}
-
-/* 5. monitors: delays are each station's distance from the shot */
-.gts-mast {
-  stroke: rgb(255 255 255 / 0.5);
-  stroke-width: 2.5;
-  stroke-linecap: round;
-}
-
-.gts-sensor {
-  fill: #fff;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: gts-trip 14s linear infinite both;
-}
-
-.gts-ping {
-  fill: none;
-  stroke: #fff;
-  stroke-width: 2;
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: gts-ping 14s linear infinite both;
-}
-
-.gts-sensor--1, .gts-ping--1 { animation-delay: 6.25s; }
-.gts-sensor--2, .gts-ping--2 { animation-delay: 6.73s; }
-.gts-sensor--3, .gts-ping--3 { animation-delay: 7.2s; }
-
-@keyframes gts-trip {
-  0%   { fill-opacity: 0.4; transform: scale(1); }
-  1.5% { fill-opacity: 1; transform: scale(1.8); }
-  7%   { fill-opacity: 0.4; transform: scale(1); }
-  100% { fill-opacity: 0.4; }
-}
-
-@keyframes gts-ping {
-  0%   { opacity: 0; transform: scale(0.3); }
-  1.5% { opacity: 0.55; transform: scale(0.6); }
-  9%   { opacity: 0; transform: scale(2); }
-  100% { opacity: 0; transform: scale(0.3); }
-}
-
-/* 6. the record — never stops */
-.gts-baseline {
-  stroke: rgb(255 255 255 / 0.16);
-  stroke-width: 2;
-}
-
-.gts-scroll {
-  animation: gts-tape 14s linear infinite;
-}
-
-@keyframes gts-tape {
-  to { transform: translateX(-620px); }
-}
-
-.gts-trace {
-  fill: none;
-  stroke: rgb(255 255 255 / 0.72);
-  stroke-width: 2.5;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.gts-hero {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .gts-header {
-  position: relative;
-  z-index: 1;
   margin: 0;
 }
 
 .gts-brand {
-  display: block;
+  display: flex;
+  justify-content: center;
 }
 
+/* EXPLORE logo — 192x41 on mobile, 331x71 on desktop */
 .gts-logo {
-  position: relative;
-  z-index: 1;
-  width: clamp(8.5rem, 38vw, 11.5rem);
+  display: block;
+  width: 12rem;
   height: auto;
   margin-inline: auto;
-  display: block;
-  filter: brightness(0) invert(1);
-}
-
-.gts-aside-line {
-  position: relative;
-  z-index: 1;
-  display: none;
-  margin: 0;
-  max-width: 24ch;
-  font-size: clamp(1.35rem, 1.8vw, 1.8rem);
-  font-weight: 500;
-  line-height: 1.4;
-  letter-spacing: -0.005em;
-  color: rgb(255 255 255 / 0.92);
-  text-wrap: balance;
-}
-
-.gts-aside-note {
-  position: relative;
-  z-index: 1;
-  display: none;
-  margin: 0;
-  max-width: 34ch;
-  font-size: 0.9375rem;
-  line-height: 1.6;
-  color: rgb(255 255 255 / 0.72);
 }
 
 /* -----------------------------------------------------------------------------
-   5. The glass card
+   5. The card — shape-neutral-50, radius large (16px)
    -------------------------------------------------------------------------- */
 .gts-card {
   position: relative;
-  width: 100%;
-  max-width: none;
-  margin: 0;
-  /* The page scrolls, not the card: a nested scroller can leave the submit
-     button below the card's own fold, which is easy to miss with the
-     on-screen keyboard open. */
-  padding: 1.5rem clamp(1rem, 5vw, 1.5rem);
-  padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
-  border: 1px solid var(--glass-line);
-  border-bottom: 0;
-  border-radius: 1.75rem 1.75rem 0 0;
-  background: var(--surface);
-  box-shadow: 0 -24px 64px -42px rgb(1 22 18 / 0.52), inset 0 1px 0 var(--glass-sheen);
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  animation: gts-card-in 0.55s var(--ease-out) both;
-}
-
-/* browsers without backdrop-filter get an opaque card instead of muddy text */
-@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
-  .gts-card {
-    background: var(--glass-solid);
-  }
-}
-
-@keyframes gts-card-in {
-  from {
-    opacity: 0;
-    transform: translateY(14px) scale(0.985);
-  }
+  width: auto;
+  margin: 1.5rem;
+  padding: 1.25rem 2.5rem;
+  border-radius: 1rem;
+  background: var(--card);
 }
 
 .gts-card-inner {
@@ -722,7 +390,23 @@ a:hover {
 }
 
 .gts-form-header {
-  margin: 0 0 1.75rem;
+  margin: 1.25rem 0 0.5rem;
+  text-align: center;
+}
+
+/* The sign-in mockup has no heading under the logo: keep it for screen readers. */
+.gts-page-login .gts-form-header {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.gts-content {
+  padding: 0.75rem 0; /* the mockup's form padding, 12px */
 }
 
 .gts-eyebrow {
@@ -735,26 +419,23 @@ a:hover {
   color: var(--brand-700);
 }
 
+/* Heading4 / SemiBold, 24px */
 .gts-title {
   margin: 0;
-  font-size: clamp(1.625rem, 1.4rem + 0.6vw, 1.875rem);
-  font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.15;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: 0;
+  line-height: 1.2;
   color: var(--ink);
   text-wrap: balance;
 }
 
 .gts-subtitle {
   margin: 0.5rem 0 0;
-  font-size: 0.875rem;
-  line-height: 1.55;
+  font-size: 1rem;
+  line-height: 1.4;
   color: var(--ink-muted);
   text-wrap: pretty;
-}
-
-.gts-content {
-  flex: 1;
 }
 
 /* attempted-username chip on step-2 pages */
@@ -788,9 +469,21 @@ a:hover {
 /* -----------------------------------------------------------------------------
    6. Locale switcher
    -------------------------------------------------------------------------- */
+/* not in the mockup: above the logo on mobile, in the card's corner on desktop */
 .gts-locale {
+  order: -1;
   align-self: flex-end;
-  margin: 0 0 1.25rem;
+  margin: 0 -1.75rem 0.5rem 0;
+}
+
+@media (min-width: 60rem) {
+  .gts-locale {
+    position: absolute;
+    z-index: 5;
+    top: 0.75rem;
+    right: 0.75rem;
+    margin: 0;
+  }
 }
 
 .gts-locale-dropdown {
@@ -875,16 +568,24 @@ a:hover {
 /* -----------------------------------------------------------------------------
    7. Fields
    -------------------------------------------------------------------------- */
+/* Form rhythm from the mockup: 20px between blocks on mobile, 30px on desktop */
 .gts-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
   margin: 0;
   min-width: 0;
   max-width: 100%;
 }
 
 .gts-field {
-  margin: 0 0 1.25rem;
+  margin: 0;
   min-width: 0;
   max-width: 100%;
+}
+
+:not(.gts-form) > .gts-field {
+  margin-bottom: 1.25rem;
 }
 
 .gts-label-row {
@@ -897,14 +598,16 @@ a:hover {
   max-width: 100%;
 }
 
+/* Subtitles1 / Bold 16, centred over the field, red asterisk (Body3 / Medium) */
 .gts-label {
   display: block;
-  margin: 0 0 0.375rem;
-  font-size: 0.8125rem;
-  font-weight: 500;
+  margin: 0;
+  padding: 0 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
   line-height: 1.4;
   letter-spacing: 0;
-  text-align: start;
+  text-align: center;
   color: var(--label-color);
 }
 
@@ -913,18 +616,31 @@ a:hover {
 }
 
 .gts-label .required {
-  margin-left: 0.1875rem;
+  margin-left: 0.125rem;
+  font-weight: 500;
   color: var(--required-color);
 }
 
-.gts-label-link {
-  font-size: 0.8125rem;
-  font-weight: 500;
-  text-decoration: none;
+/* "Links" component — moonstone, underlined, Body3 16 */
+.gts-label-link,
+.gts-links a,
+.gts-content a:not(.gts-btn) {
+  padding: 0 0.125rem;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--link);
+  text-decoration: underline;
+  text-underline-position: from-font;
+  text-decoration-skip-ink: none;
 }
 
-.gts-label-link:hover {
-  text-decoration: underline;
+.gts-label-link:hover,
+.gts-links a:hover,
+.gts-content a:not(.gts-btn):hover {
+  color: var(--link);
+  background: var(--link-hover-bg);
 }
 
 .gts-input,
@@ -933,10 +649,10 @@ a:hover {
 :where(.gts-field) :where(input:not([type="checkbox"]):not([type="radio"]):not([type="submit"])) {
   width: 100%;
   max-width: 100%;
-  min-height: var(--control-h);
-  padding: var(--field-pad-y) var(--field-pad-x);
+  height: var(--control-h);
+  padding: 0 var(--field-pad-x);
   font: inherit;
-  font-size: 1rem; /* 16px keeps iOS from zooming on focus; 14px on desktop */
+  font-size: 1rem; /* Body3 16 — also keeps iOS from zooming on focus */
   line-height: 1.4;
   color: var(--ink);
   background: var(--field-bg);
@@ -948,25 +664,30 @@ a:hover {
 }
 
 .gts-field textarea {
+  height: auto;
+  padding-block: var(--field-pad-y);
   min-height: 6rem;
   resize: vertical;
 }
 
+/* placeholder: Body2 / Regular 18, field-disabled grey */
 .gts-input::placeholder {
-  color: var(--ink-muted);
-  opacity: 0.75;
+  font-size: 1.125rem;
+  color: var(--field-placeholder);
+  opacity: 1;
 }
 
 .gts-input:hover {
   border-color: var(--field-line-hover);
 }
 
+/* focus: the stroke goes from 2px to 4px, drawn inside so nothing moves */
 .gts-input:focus,
 .gts-field select:focus,
 .gts-field textarea:focus {
   outline: none;
-  border-color: var(--brand-600);
-  box-shadow: var(--ring);
+  border-color: var(--field-line);
+  box-shadow: inset 0 0 0 2px var(--field-line);
 }
 
 .gts-input[aria-invalid="true"],
@@ -975,7 +696,7 @@ a:hover {
 }
 
 .gts-input[aria-invalid="true"]:focus {
-  box-shadow: 0 0 0 4px rgb(180 35 28 / 0.16);
+  box-shadow: inset 0 0 0 2px var(--danger);
 }
 
 .gts-input[type="password"] {
@@ -983,8 +704,16 @@ a:hover {
 }
 
 .gts-input:disabled {
-  opacity: 0.6;
+  border-color: var(--field-line-disabled);
   cursor: not-allowed;
+}
+
+.gts-field:has(.gts-input:disabled) .gts-label {
+  color: var(--field-placeholder);
+}
+
+.gts-field:has(.gts-input:disabled) .required {
+  color: var(--required-disabled);
 }
 
 /* keep autofill on-brand instead of Chrome's yellow */
@@ -1015,45 +744,43 @@ a:hover {
   padding-right: 2.75rem;
 }
 
+/* 16px Visible / Invisible icons from the mockup, 2px padding, 16px from the edge */
 .gts-reveal {
   position: absolute;
   top: 50%;
-  right: 0.25rem;
+  right: 0.75rem;
   transform: translateY(-50%);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
+  height: 1.5rem;
   padding: 0;
-  color: var(--ink-muted);
   background: transparent;
   border: none;
-  border-radius: var(--r-sm);
+  border-radius: 4px;
   cursor: pointer;
-  transition: color var(--fast) var(--ease), background var(--fast) var(--ease);
 }
 
 .gts-reveal:hover {
-  color: var(--ink);
-  background: var(--surface-sunken);
+  background: var(--link-hover-bg);
 }
 
 .gts-icon-eye,
 .gts-icon-eye-off {
-  width: 1.125rem;
-  height: 1.125rem;
-  background: currentColor;
+  width: 1rem;
+  height: 1rem;
+  background: center / contain no-repeat;
+  transform: scaleY(-1); /* the mockup flips the icon instance vertically */
 }
 
+/* the field shows "Invisible" while the password is hidden, "Visible" once shown */
 .gts-icon-eye {
-  -webkit-mask: var(--icon-eye) center / contain no-repeat;
-  mask: var(--icon-eye) center / contain no-repeat;
+  background-image: url("../img/eye-off.svg");
 }
 
 .gts-icon-eye-off {
-  -webkit-mask: var(--icon-eye-off) center / contain no-repeat;
-  mask: var(--icon-eye-off) center / contain no-repeat;
+  background-image: url("../img/eye.svg");
 }
 
 .gts-field-error {
@@ -1106,11 +833,13 @@ a:hover {
 }
 
 /* Checkbox */
+/* "Checkbox" component, mintgreen: 20px box, 2px stroke, radius 4, Body3 16 */
 .gts-check {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  font-size: 0.8125rem;
+  font-size: 1rem;
+  line-height: 1.4;
   color: var(--ink);
   cursor: pointer;
   user-select: none;
@@ -1120,24 +849,44 @@ a:hover {
   appearance: none;
   -webkit-appearance: none;
   flex: none;
-  width: 1rem;
-  height: 1rem;
+  width: 1.25rem;
+  height: 1.25rem;
   margin: 0;
-  border: 1px solid var(--field-line-hover);
-  border-radius: 0.25rem;
+  border: 2px solid var(--check-line);
+  border-radius: 4px;
   background: var(--field-bg);
   cursor: pointer;
-  transition: background var(--fast) var(--ease), border-color var(--fast) var(--ease);
+}
+
+.gts-check:hover input[type="checkbox"]:not(:checked) {
+  background: var(--check-hover);
 }
 
 .gts-check input[type="checkbox"]:checked {
-  background: var(--accent-brand) var(--icon-check) center / 0.75rem no-repeat;
-  border-color: var(--accent-brand);
+  background: var(--check-line) url("../img/check.svg") center / 1rem no-repeat;
+}
+
+/* checked label is bold in the mockup */
+.gts-check:has(input:checked) {
+  font-weight: 700;
+}
+
+.gts-check input[type="checkbox"]:disabled {
+  border-color: var(--check-disabled);
+}
+
+.gts-check input[type="checkbox"]:disabled:checked {
+  background-color: var(--check-disabled);
+}
+
+.gts-check:has(input:disabled) {
+  color: var(--field-placeholder);
+  cursor: default;
 }
 
 .gts-check input[type="checkbox"]:focus-visible {
-  outline: none;
-  box-shadow: var(--ring);
+  outline: 2px solid var(--check-line);
+  outline-offset: 2px;
 }
 
 /* native checkbox/radio on pages Keycloak renders from the base theme */
@@ -1150,11 +899,12 @@ a:hover {
   vertical-align: -0.1875rem;
 }
 
+/* "Button group": stacked on mobile (12px), one row on desktop */
 .gts-options {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
   flex-wrap: wrap;
 }
 
@@ -1165,26 +915,35 @@ a:hover {
 /* -----------------------------------------------------------------------------
    8. Buttons
    -------------------------------------------------------------------------- */
+/* buttons sit centred under the form, at their natural (small) size */
 .gts-actions {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 0.625rem;
-  margin: 1.5rem 0 0;
+  margin: 0;
 }
 
+:not(.gts-form) > .gts-actions {
+  margin-top: 1.25rem;
+}
+
+/* "Buttons" component, small: 8px padding, 4px radius, Subtitles2 / Medium 14 */
 .gts-btn {
   position: relative;
   overflow: hidden;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--btn-gap);
-  width: 100%;
-  min-height: var(--control-h);
+  gap: 0.25rem;
+  width: auto;
+  min-width: 5.125rem; /* 82px */
+  min-height: 0;
   padding: var(--btn-pad-y) var(--btn-pad-x);
   font: inherit;
   font-size: 0.875rem;
-  font-weight: 600;
+  line-height: 1.4;
+  font-weight: 500;
   letter-spacing: 0;
   text-decoration: none;
   border: 1px solid transparent;
@@ -1611,132 +1370,77 @@ a.gts-btn-primary:focus-visible {
 }
 
 /* -----------------------------------------------------------------------------
-   14. Larger screens — true two-pane desktop
+   14. Desktop — the mockup's 1920 frame is 622 : 229 (illustration : card
+   column). The card sits 24px inside its column, logo at the top, form centred
+   in the space below it.
    -------------------------------------------------------------------------- */
 @media (min-width: 60rem) {
-  /* Two equal halves: an inset, rounded brand panel and a plain form column.
-     The fixed atmosphere is clipped to the panel so the form side stays flat. */
-  .gts-login {
-    align-items: stretch;
-    background: var(--surface);
-  }
-
-  .gts-bg {
-    inset: 0.5rem auto 0.5rem 0.5rem;
-    width: calc(50% - 0.75rem);
-    border-radius: 1rem;
-  }
-
   .gts-stage {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    grid-template-rows: 1fr;
+    grid-template-columns: minmax(0, 1fr) clamp(28rem, 26.875vw, 36rem);
     align-items: stretch;
-    width: 100%;
-    max-width: none;
-    margin: 0;
-    gap: 0;
   }
 
-  /* logo top-left, copy bottom-left, the blast scene in between */
   .gts-brand-col {
-    justify-content: flex-start;
-    min-height: calc(100vh - 1rem);
-    min-height: calc(100dvh - 1rem);
-    margin: 0.5rem 0 0.5rem 0.5rem;
-    padding: clamp(1.75rem, 2.6vw, 2.5rem);
-    border-radius: 1rem;
-    text-align: left;
-    gap: 0.5rem;
-  }
-
-  .gts-aside-line {
-    margin-top: auto;
-    max-width: 28ch;
-    font-size: 1.5rem;
-    font-weight: 700;
-    line-height: 1.2;
-    letter-spacing: -0.02em;
-    color: #fff;
-  }
-
-  .gts-glass-art {
-    right: clamp(1rem, 4vw, 4rem);
-    bottom: clamp(1.5rem, 5vh, 4rem);
-    width: min(31rem, 46vw);
-    opacity: 0.66;
-  }
-
-  .gts-aside-note {
-    margin-top: 0;
-    font-size: 0.8125rem;
-    line-height: 1.5;
-    color: rgb(255 255 255 / 0.78);
-  }
-
-  .gts-brand-col::before {
-    opacity: 0.08;
-    background-size: 40px 40px;
-    mask-image: linear-gradient(90deg, rgb(0 0 0 / 0.86), transparent 92%);
-  }
-
-  .gts-brand-col::after {
-    right: -2%;
-    bottom: -8%;
-    width: min(31rem, 42vw);
-    border-radius: 22%;
-    opacity: 0.48;
-  }
-
-  .gts-glass-art {
-    top: 50%;
-    right: 6%;
-    bottom: auto;
-    width: min(30rem, 34vw);
-    transform: translateY(-58%);
-    opacity: 0.74;
-  }
-
-  .gts-logo {
-    width: clamp(8.5rem, 9vw, 9.5rem);
-    margin-inline: 0;
-  }
-
-  .gts-aside-line,
-  .gts-aside-note {
     display: block;
+    position: relative;
+    min-height: 100vh;
+    min-height: 100dvh;
+  }
+
+  .gts-hero {
+    position: absolute;
+    inset: 0;
   }
 
   .gts-card {
     display: flex;
-    align-items: center;
-    min-height: 100vh;
-    min-height: 100dvh;
-    max-height: none;
-    padding: 2.5rem;
-    border: 0;
-    border-radius: 0;
-    background: var(--surface);
-    box-shadow: none;
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
+    margin: 1.5rem;
+    min-height: calc(100vh - 3rem);
+    min-height: calc(100dvh - 3rem);
+    padding: clamp(2.5rem, 3.44vw, 4.125rem) clamp(2rem, 3.44vw, 4.125rem) 1.5rem;
   }
 
   .gts-card-inner {
-    max-width: 22.5rem; /* 360px form column */
-    margin: auto;
+    flex: 1;
+    max-width: none;
   }
 
-  .gts-form-header {
-    margin-bottom: 2rem;
-    text-align: center;
+  .gts-logo {
+    width: min(100%, 20.6875rem); /* 331px */
   }
 
-  /* no iOS zoom to dodge on desktop, so fields match the 14px button label */
-  .gts-input,
-  :where(.gts-field) :where(select),
-  :where(.gts-field) :where(textarea),
-  :where(.gts-field) :where(input:not([type="checkbox"]):not([type="radio"]):not([type="submit"])) {
-    font-size: 0.875rem;
+  /* form block centred in the space under the logo */
+  .gts-card-inner > #kc-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .gts-card-inner > #kc-content > #kc-content-wrapper {
+    width: 100%;
+    max-width: 19.375rem; /* 310px */
+    margin-inline: auto;
+  }
+
+  /* checkbox and link on one row, as in the desktop frame */
+  .gts-options {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .gts-form {
+    gap: 1.875rem; /* 30px */
+  }
+
+  /* the GTS mark is part of the illustration on desktop */
+  .gts-corp {
+    display: none;
+  }
+
+  .gts-footer {
+    justify-content: center;
   }
 }
 
@@ -1756,29 +1460,6 @@ a.gts-btn-primary:focus-visible {
    15. Motion & contrast preferences
    -------------------------------------------------------------------------- */
 @media (prefers-reduced-motion: reduce) {
-  .gts-bg span {
-    animation: none;
-  }
-
-  .gts-rig,
-  .gts-fire,
-  .gts-wave,
-  .gts-ping,
-  .gts-charge {
-    display: none;
-  }
-
-  .gts-hole,
-  .gts-sensor,
-  .gts-scroll {
-    animation: none;
-  }
-
-  .gts-hole {
-    stroke-dashoffset: 0;
-  }
-
-
   *,
   *::before,
   *::after {
