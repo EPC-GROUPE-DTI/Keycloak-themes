@@ -9,7 +9,7 @@ disk; a login page transfers roughly 35 KB of CSS + JS + the 2 KB logo.
 
 ```
 themes/gts-theme/login/
-├── theme.properties            parent theme, class map, locales
+├── theme.properties            parent theme, class map, locales, app version
 ├── template.ftl                page shell: art panel, header, alerts, footer
 ├── gts-commons.ftl             shared macros (password field, submit button)
 ├── footer.ftl                  footer of the form column
@@ -239,6 +239,7 @@ a class renamed in the CSS must be renamed in both.
   falls back to Keycloak's `base` bundle. Files are ASCII with `\uXXXX`
   escapes; keep them that way to stay encoding-proof.
 - **Brand panel copy** — `brandName`, `brandTagline`, `brandNote`.
+- **Version label** — `appVersion` in `theme.properties`, shown in the footer.
 - **Footer links** — `footer.ftl` (ships without links; add real URLs).
 
 ## Accessibility and behaviour
