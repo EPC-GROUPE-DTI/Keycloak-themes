@@ -174,7 +174,7 @@
                     </div>
                 </div>
 
-                <@loginFooter.content brandName=brandName/>
+                <@loginFooter.content/>
             </div>
         </main>
     </div>

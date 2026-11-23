@@ -1305,13 +1305,6 @@ a.gts-btn-primary:focus-visible {
   display: block;
 }
 
-.gts-footer-meta {
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-  margin: 0;
-}
-
 .gts-footer-links {
   display: flex;
   gap: 1rem;
@@ -1328,11 +1321,6 @@ a.gts-btn-primary:focus-visible {
 .gts-footer a:hover {
   color: var(--ink-soft);
   text-decoration: underline;
-}
-
-.gts-version {
-  font-variant-numeric: tabular-nums;
-  letter-spacing: 0;
 }
 
 @media (max-width: 30rem) {
