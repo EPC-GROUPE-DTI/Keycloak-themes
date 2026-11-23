@@ -71,17 +71,17 @@
   --btn-fg-disabled: #fdfdfd;
   --btn-radius: 4px;
 
-  /* Text field, Magnific-style: 40px, white, 1px light-grey hairline, 8px
-     radius; dark stroke + soft ring on focus. Label small and left-aligned. */
+  /* Figma "Dropdown simple - Header center" text field: 38px, #fdfdfd,
+     2px amarante stroke (4px on focus), 4px radius, 16px side padding */
   --field-pad-y: 0.5rem;
-  --field-pad-x: 0.75rem;
-  --field-radius: 8px;
-  --field-line: #d9d9d9;
-  --field-line-hover: #b3b3b3;
-  --field-line-focus: #121212;
-  --field-line-disabled: #e6e6e6;
-  --field-line-width: 1px;
-  --field-placeholder: #9a9a9a;
+  --field-pad-x: 1rem;
+  --field-radius: 4px;
+  --field-line: #6c1d45;
+  --field-line-hover: #6c1d45;
+  --field-line-focus: #6c1d45;
+  --field-line-disabled: #b87698;
+  --field-line-width: 2px;
+  --field-placeholder: #acadaf;
   --label-color: #121212;
   --required-color: #df2a2a;
   --required-disabled: #f0a8a8;
@@ -100,8 +100,8 @@
   --card: #f1f1f1;
   --surface: #ffffff;
   --surface-sunken: rgb(255 255 255 / 0.55);
-  --field-bg: #ffffff;
-  --field-autofill: #ffffff;
+  --field-bg: #fdfdfd;
+  --field-autofill: #fdfdfd;
 
   /* Glass */
   --glass: rgb(255 255 255 / 0.84);
@@ -480,10 +480,10 @@ a:hover {
 
 @media (min-width: 60rem) {
   .gts-locale {
-    position: absolute;
+    position: fixed;
     z-index: 5;
-    top: 0.75rem;
-    right: 0.75rem;
+    top: 1.5rem;
+    right: 1.5rem;
     margin: 0;
   }
 }
@@ -600,16 +600,17 @@ a:hover {
   max-width: 100%;
 }
 
-/* Figma "Subtitles1 / Bold": Roboto Bold 16 / 1.4, left-aligned, 6px above the field */
+/* Figma "Subtitles1 / Bold": Roboto Bold 16 / 1.4, centred over the field,
+   8px side padding, sitting directly on the field */
 .gts-label {
   display: block;
-  margin: 0 0 0.375rem;
-  padding: 0;
+  margin: 0;
+  padding: 0 0.5rem;
   font-size: 1rem;
   font-weight: 700;
   line-height: 1.4;
   letter-spacing: 0;
-  text-align: start;
+  text-align: center;
   color: var(--label-color);
 }
 
@@ -685,13 +686,13 @@ a:hover {
   border-color: var(--field-line-hover);
 }
 
-/* focus: dark hairline plus a soft outer ring */
+/* Figma "Focus": the stroke goes from 2px to 4px, drawn inside so nothing moves */
 .gts-input:focus,
 .gts-field select:focus,
 .gts-field textarea:focus {
   outline: none;
   border-color: var(--field-line-focus);
-  box-shadow: 0 0 0 3px rgb(18 18 18 / 0.08);
+  box-shadow: inset 0 0 0 2px var(--field-line-focus);
 }
 
 .gts-input[aria-invalid="true"],
@@ -700,7 +701,7 @@ a:hover {
 }
 
 .gts-input[aria-invalid="true"]:focus {
-  box-shadow: 0 0 0 3px rgb(180 35 28 / 0.12);
+  box-shadow: inset 0 0 0 2px var(--danger);
 }
 
 .gts-input[type="password"] {
@@ -1381,19 +1382,20 @@ a.gts-btn-primary:focus-visible {
 }
 
 /* -----------------------------------------------------------------------------
-   14. Desktop — the mockup's 1920 frame is 622 : 229 (illustration : card
-   column). The card sits 24px inside its column, logo at the top, form centred
-   in the space below it.
+   14. Desktop — Figma "Connexion" in the browser frame: illustration on the
+   left half, white right half with a compact grey card centred in it.
+   At 1920px: card 370 wide (310px form + 30px sides), ~420 high, 16px radius.
    -------------------------------------------------------------------------- */
 @media (min-width: 60rem) {
   .gts-stage {
-    grid-template-columns: minmax(0, 1fr) clamp(28rem, 26.875vw, 36rem);
-    align-items: stretch;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
   }
 
   .gts-brand-col {
     display: block;
     position: relative;
+    align-self: stretch;
     min-height: 100vh;
     min-height: 100dvh;
   }
@@ -1404,38 +1406,26 @@ a.gts-btn-primary:focus-visible {
   }
 
   .gts-card {
-    display: flex;
-    margin: 1.5rem;
-    min-height: calc(100vh - 3rem);
-    min-height: calc(100dvh - 3rem);
-    padding: clamp(2.5rem, 3.44vw, 4.125rem) clamp(2rem, 3.44vw, 4.125rem) 0;
+    width: 23.125rem; /* 370px */
+    max-width: calc(100% - 3rem);
+    margin: 1.5rem auto;
+    padding: 1.5rem 1.875rem 1.25rem; /* 24 / 30 / 20 */
   }
 
   .gts-card-inner {
-    flex: 1;
     max-width: none;
   }
 
   .gts-logo {
-    width: min(100%, 20.6875rem); /* 331px */
+    width: 14.375rem; /* 230px */
   }
 
-  /* form block centred in the space under the logo */
   .gts-card-inner > #kc-content {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    justify-content: center;
+    margin-top: 2.25rem; /* logo → first label, with the 12px form padding */
   }
 
-  .gts-card-inner > #kc-content > #kc-content-wrapper {
-    width: 100%;
-    max-width: 19.375rem; /* 310px */
-    margin-inline: auto;
-  }
-
-  /* checkbox and link on one row, as in the desktop frame (Roboto 16, as in
-     Figma); the link wraps under the checkbox if a translation is too long */
+  /* checkbox and link on one row, as in the mockup; the link wraps under the
+     checkbox if a translation is too long */
   .gts-options {
     flex-direction: row;
     align-items: center;
@@ -1444,21 +1434,20 @@ a.gts-btn-primary:focus-visible {
   }
 
   .gts-form {
-    gap: 1.875rem; /* 30px, the mockup desktop rhythm */
+    gap: 1.875rem; /* 30px */
   }
 
-  /* the GTS mark is part of the illustration on desktop */
+  /* Not in the mockup, so kept out of the card: the build line sits at the
+     bottom of the right half, the language switch in its top-right corner. */
   .gts-corp {
     display: none;
   }
 
-  /* out of the flow, so the form centres in the full space under the logo
-     as in the mockup (which has no footer) */
   .gts-footer {
-    position: absolute;
+    position: fixed;
     right: 0;
     bottom: 1rem;
-    left: 0;
+    left: 50%;
     margin: 0;
     padding: 0;
     justify-content: center;
