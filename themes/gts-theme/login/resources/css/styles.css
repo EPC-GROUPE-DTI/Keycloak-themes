@@ -54,7 +54,7 @@
   /* Explore 2 "Buttons" component, small size: padding 8px, radius 4px */
   --btn-pad-y: 0.5rem;
   --btn-pad-x: 0.5rem;
-  --control-h: 2.5rem; /* 40px field height */
+  --control-h: 2.375rem; /* 38px — the mockup field height */
   --btn-gap: 0.5rem;
   /* Button state scale (design hand-off). Label is white in every state, per
      the brand spec. Contrast against white:
@@ -956,6 +956,7 @@ a:hover {
 .gts-btn-primary {
   color: var(--btn-fg);
   background: var(--btn-bg);
+  border-width: 0; /* 8px padding + 19.6px line = the mockup's 36px button */
   box-shadow: none;
 }
 
@@ -1397,7 +1398,7 @@ a.gts-btn-primary:focus-visible {
     margin: 1.5rem;
     min-height: calc(100vh - 3rem);
     min-height: calc(100dvh - 3rem);
-    padding: clamp(2.5rem, 3.44vw, 4.125rem) clamp(2rem, 3.44vw, 4.125rem) 1.5rem;
+    padding: clamp(2.5rem, 3.44vw, 4.125rem) clamp(2rem, 3.44vw, 4.125rem) 0;
   }
 
   .gts-card-inner {
@@ -1437,7 +1438,7 @@ a.gts-btn-primary:focus-visible {
   }
 
   .gts-form {
-    gap: 1.25rem; /* 20px between fields, as on Magnific */
+    gap: 1.875rem; /* 30px, the mockup desktop rhythm */
   }
 
   /* no iOS zoom to dodge on desktop: 14px field text, as on Magnific */
@@ -1453,7 +1454,15 @@ a.gts-btn-primary:focus-visible {
     display: none;
   }
 
+  /* out of the flow, so the form centres in the full space under the logo
+     as in the mockup (which has no footer) */
   .gts-footer {
+    position: absolute;
+    right: 0;
+    bottom: 1rem;
+    left: 0;
+    margin: 0;
+    padding: 0;
     justify-content: center;
   }
 }
