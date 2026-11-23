@@ -33,7 +33,7 @@ REQUIRED=(
   "login/resources/js/script.js"
   "login/resources/img/logo.svg"
   "login/resources/img/favicon.svg"
-  "login/resources/fonts/plus-jakarta-sans-latin.woff2"
+  "login/resources/fonts/geist-variable.woff2"
   "login/messages/messages_en.properties"
 )
 
@@ -100,16 +100,37 @@ if ! sudo -u "$KC_USER" test -r "$DEST/login/resources/css/styles.css"; then
 fi
 say "Readable by $KC_USER"
 
-# --- 6. restart -------------------------------------------------------------
+# --- 6. restart, dropping Keycloak's gzip copies of the old theme -----------
+# Keycloak serves compressed resources from data/tmp/kc-gzip-cache/<resource
+# version>/login/<theme>/ and never invalidates them: the resource version does
+# not change on a theme update, and a restart keeps the directory. Without this,
+# browsers (Accept-Encoding: gzip) keep getting the previous CSS/JS while curl
+# (uncompressed) shows the new files. Keycloak recreates them on demand.
+# Cleared while the service is stopped, so the old process cannot refill it.
+GZ_GLOB="$KC_HOME/data/tmp/kc-gzip-cache/*/login/$THEME"
+clear_gzip_cache() {
+  local dirs
+  shopt -s nullglob
+  dirs=($GZ_GLOB)
+  shopt -u nullglob
+  if (( ${#dirs[@]} )); then
+    rm -rf -- "${dirs[@]}"
+    say "Cleared Keycloak gzip cache for $THEME (${#dirs[@]} dir(s))"
+  fi
+}
+
 if [[ "$RESTART" -eq 1 ]]; then
   say "Restarting $KC_SERVICE (production mode caches themes, so this is required)"
-  systemctl restart "$KC_SERVICE"
+  systemctl stop "$KC_SERVICE"
+  clear_gzip_cache
+  systemctl start "$KC_SERVICE"
   sleep 3
   systemctl is-active --quiet "$KC_SERVICE" \
     && say "$KC_SERVICE is running" \
     || fail "$KC_SERVICE did not come back up — check: journalctl -u $KC_SERVICE -n 50"
 else
   say "Skipped restart (--no-restart). The theme will not load until you restart."
+  say "When you do: systemctl stop $KC_SERVICE && rm -rf $GZ_GLOB && systemctl start $KC_SERVICE"
 fi
 
 cat <<EOF
