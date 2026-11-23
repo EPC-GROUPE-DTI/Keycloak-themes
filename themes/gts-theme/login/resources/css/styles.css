@@ -1388,7 +1388,10 @@ a.gts-btn-primary:focus-visible {
    -------------------------------------------------------------------------- */
 @media (min-width: 60rem) {
   .gts-stage {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    /* The illustration column widens with the viewport height (118vh) so the
+       cropped scene still shows the GTS mark; the form column keeps at least
+       26rem, and the card stays centred in it — i.e. moves right. */
+    grid-template-columns: clamp(50%, 118vh, calc(100% - 26rem)) minmax(0, 1fr);
     align-items: center;
   }
 
