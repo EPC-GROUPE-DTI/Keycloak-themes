@@ -65,11 +65,12 @@
 <div class="${properties.kcLoginClass!}">
     <div class="gts-stage">
         <#-- Desktop illustration, from the Explore 2 "Connexion" mockup (Figma 1937:281784).
-             Coordinates are the mockup's own; the viewBox covers the column (slice) like the
-             mockup frame, rocks cropped at the edges. Hidden below 60rem. -->
+             Coordinates are the mockup's own. The viewBox fits the width, so the whole scene
+             (GTS mark included) stays visible; the clip is open vertically so the rocks run
+             off the top and bottom of the column, as in the mockup. Hidden below 60rem. -->
         <div class="gts-brand-col" aria-hidden="true">
-            <svg class="gts-hero" viewBox="0 0 622.294 359.902" preserveAspectRatio="xMidYMid slice" focusable="false">
-                <defs><clipPath id="gts-hero-clip"><rect width="622.294" height="359.902"/></clipPath></defs>
+            <svg class="gts-hero" viewBox="0 0 622.294 359.902" preserveAspectRatio="xMidYMid meet" focusable="false">
+                <defs><clipPath id="gts-hero-clip"><rect y="-308.205" width="622.294" height="976.311"/></clipPath></defs>
                 <g clip-path="url(#gts-hero-clip)">
                     <image href="${url.resourcesPath}/img/hero/green-shape.svg" x="116.24" y="37.457" width="400.871" height="248.689"/>
                     <g transform="translate(278.548 349.396) rotate(-135)">
